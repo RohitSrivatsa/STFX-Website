@@ -115,8 +115,8 @@ function openDrawer(id){
       <h4>About</h4><div class="ph">Short biography placeholder (2–3 sentences).</div>
       <h4>Research areas</h4><div class="tags">${e.areas.map(a=>`<span>${areaName(a)}</span>`).concat(e.keywords.map(k=>`<span>${k}</span>`)).join('')}</div>
       <h4>Courses taught</h4><ul>${e.courses.map(c=>`<li><b>${c.code}</b> — ${c.title}</li>`).join('')}</ul>
-      <h4>Contact</h4><div style="font-size:14px">${e.email}</div>
-      <div class="acts"><a class="btn gold" href="${profileUrl(e,'option-d-quickview.html')}">Open full profile →</a><a class="btn line" href="mailto:${e.email}">Email</a></div>
+      <h4>Contact</h4><div style="font-size:14px;line-height:1.8"><b>Email:</b> <a href="mailto:${e.email}">${e.email}</a><br><b>CV:</b> <a href="#" onclick="return false">Download CV (PDF)</a></div>
+      <div class="acts"><a class="btn gold" href="${profileUrl(e,'option-d-quickview.html')}">Open full profile →</a></div>
     </div>`;
   document.body.classList.add('open'); render();
 }

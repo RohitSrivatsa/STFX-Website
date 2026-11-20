@@ -606,8 +606,6 @@ function renderProfile(id){
         <p class="role">${esc(e.rank)}, Faculty of ${esc(e.faculty)}</p>
         <div class="badges">${e.media?'<span class="gold">🎙 Available for media</span>':''}${e.langs.map(l=>`<span>${l}</span>`).join('')}<span>At StFX since ${e.joined}</span></div>
         <div class="actions">
-          <a class="btn primary" href="mailto:${e.email}">✉ Contact ${esc(e.first)}</a>
-          <a class="btn ghost" href="#" onclick="return false">Download CV</a>
           <a class="btn ghost" href="#" onclick="return false">Google Scholar ↗</a>
         </div>
       </div>
@@ -639,9 +637,10 @@ function renderProfile(id){
     </div>
     <div class="side">
       <section class="p-sec contact" id="contact"><h2>Contact</h2>
-        <div><i>✉</i><span><small>Email</small>${e.email}</span></div>
+        <div><i>✉</i><span><small>Email</small><a href="mailto:${e.email}">${e.email}</a></span></div>
         <div><i>☎</i><span><small>Phone</small>902-000-0000</span></div>
         <div><i>📍</i><span><small>Office</small>Building placeholder, Room 000</span></div>
+        <div><i>📄</i><span><small>CV</small><a href="#" onclick="return false">Download CV (PDF)</a></span></div>
       </section>
       ${e.media?`<section class="p-sec mediabox"><h2>Media requests</h2><p>${esc(e.first)} is available to comment on ${esc(e.keywords[0])} and related topics. Contact the media relations office to arrange an interview.</p><a class="btn primary" href="#" onclick="return false">Request an interview</a></section>`:''}
       <section class="p-sec related"><h2>Related experts</h2>

@@ -44,8 +44,7 @@ document.getElementById('root').innerHTML = `
 <section class="top"><div class="wrap">
   <a class="back" href="${from}">← Back to all experts</a>
   <div class="hd">${photo(e)}
-    <div class="t"><div class="d">${e.dept} · Faculty of ${e.faculty}</div><h1>${e.name}</h1><p>${e.rank}${e.media?' · Available for media':''}</p>
-      <div class="acts"><a class="btn gold" href="mailto:${e.email}">Email ${e.first}</a><a class="btn line" href="#" onclick="return false">Download CV</a></div></div>
+    <div class="t"><div class="d">${e.dept} · Faculty of ${e.faculty}</div><h1>${e.name}</h1><p>${e.rank}${e.media?' · Available for media':''}</p></div>
   </div>
 </div></section>
 <main class="wrap grid">
@@ -57,7 +56,7 @@ document.getElementById('root').innerHTML = `
   </div>
   <aside class="side">
     <section class="box rows"><h2>Contact</h2>
-      <div><span><small>Email</small>${e.email}</span></div><div><span><small>Phone</small>902-000-0000</span></div><div><span><small>Office</small>Building, Room 000</span></div></section>
+      <div><span><small>Email</small><a href="mailto:${e.email}">${e.email}</a></span></div><div><span><small>Phone</small>902-000-0000</span></div><div><span><small>Office</small>Building, Room 000</span></div><div><span><small>CV</small><a href="#" onclick="return false">Download CV (PDF)</a></span></div></section>
   </aside>
 </main>`;
 </script>

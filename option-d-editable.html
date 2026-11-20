@@ -530,9 +530,8 @@ function openDrawer(id){
       <h4>About</h4>${e.bio?`<div class="bio">${esc(e.bio.length>320?e.bio.slice(0,320)+'…':e.bio)}</div>`:`<div class="phtext">Short biography placeholder (2–3 sentences).</div>`}
       <h4>Research areas</h4><div class="tagset">${e.areas.map(a=>`<span>${areaName(a)}</span>`).concat(e.keywords.map(k=>`<span>${esc(k)}</span>`)).join('')}</div>
       ${e.courses.length?`<h4>Courses taught</h4><ul>${e.courses.map(c=>`<li><b>${esc(c.code)}</b> — ${esc(c.title)}</li>`).join('')}</ul>`:''}
-      <h4>Contact</h4><div style="font-size:14px">${esc(e.email)}</div>
-      <div class="acts"><a class="btn gold" href="#/expert/${e.id}">Open full profile →</a><a class="btn line" href="mailto:${esc(e.email)}">Email</a>
-      ${USER?`<a class="btn navy" href="#/admin/edit/${e.id}">✎ Edit</a>`:''}</div></div>`;
+      <h4>Contact</h4><div style="font-size:14px;line-height:1.8"><b>Email:</b> <a href="mailto:${esc(e.email)}">${esc(e.email)}</a>${e.phone?`<br><b>Phone:</b> ${esc(e.phone)}`:''}<br><b>CV:</b> <a href="#" onclick="return false">Download CV (PDF)</a></div>
+      <div class="acts"><a class="btn gold" href="#/expert/${e.id}">Open full profile →</a>      ${USER?`<a class="btn navy" href="#/admin/edit/${e.id}">✎ Edit</a>`:''}</div></div>`;
   document.body.classList.add('open'); renderList();
 }
 function closeDrawer(){ document.body.classList.remove('open'); openId=null; renderList(); }
@@ -545,14 +544,14 @@ function renderProfile(id){
   <section class="p-hero">${photoBox(e)}
     <div><div class="p-dept">${esc(e.dept)} · Faculty of ${esc(e.faculty)}</div><h1 class="p-name">${esc(e.first+' '+e.last)}</h1><p class="p-rank">${esc(e.rank)}</p>
       <div class="p-tags">${e.keywords.map(k=>`<span>${esc(k)}</span>`).join('')}</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="p-btn" href="mailto:${esc(e.email)}">Email ${esc(e.first)}</a>${USER?`<a class="p-btn line" href="#/admin/edit/${e.id}">✎ Edit profile</a>`:''}</div></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">${USER?`<a class="p-btn line" href="#/admin/edit/${e.id}">✎ Edit profile</a>`:''}</div></div>
   </section>
   <div class="p-body"><div class="p-main">
     <section><h2>Biography</h2>${e.bio?`<p>${esc(e.bio)}</p>`:`<div class="phtext">Biography placeholder.</div>`}</section>
     ${e.project?`<section><h2>Project(s)</h2><p>${esc(e.project)}</p></section>`:''}
     ${e.courses.length?`<section><h2>Courses Taught</h2><table class="p-courses">${e.courses.map(c=>`<tr><td>${esc(c.code)}</td><td>${esc(c.title)}</td></tr>`).join('')}</table></section>`:''}
   </div>
-  <aside class="p-card"><h3>Contact</h3><dl><dt>Email</dt><dd>${esc(e.email)}</dd>${e.phone?`<dt>Phone</dt><dd>${esc(e.phone)}</dd>`:''}${e.office?`<dt>Office</dt><dd>${esc(e.office)}</dd>`:''}</dl>
+  <aside class="p-card"><h3>Contact</h3><dl><dt>Email</dt><dd><a href="mailto:${esc(e.email)}">${esc(e.email)}</a></dd>${e.phone?`<dt>Phone</dt><dd>${esc(e.phone)}</dd>`:''}${e.office?`<dt>Office</dt><dd>${esc(e.office)}</dd>`:''}<dt>CV</dt><dd><a href="#" onclick="return false">Download CV (PDF)</a></dd></dl>
     <h3 style="margin-top:20px">Research Axis</h3><div class="p-tags" style="margin:0">${e.areas.map(a=>`<span>${areaName(a)}</span>`).join('')}</div></aside></div>`;
 }
 

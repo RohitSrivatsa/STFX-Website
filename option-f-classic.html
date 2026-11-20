@@ -384,10 +384,6 @@ function showProfile(id){
       <h1 class="p-name">${esc(full)}</h1>
       <p class="p-rank">${esc(e.rank)}</p>
       <div class="p-tags">${tags(e.keywords)}</div>
-      <div class="p-actions">
-        <a class="p-btn" href="mailto:${e.email}">Email ${esc(e.first)}</a>
-        <a class="p-btn line" href="#" onclick="return false">Download CV</a>
-      </div>
     </div>
   </section>
   <div class="p-body">
@@ -399,7 +395,7 @@ function showProfile(id){
     </div>
     <aside class="p-card">
       <h3>Contact</h3>
-      <dl><dt>Email</dt><dd><a href="mailto:${e.email}">${e.email}</a></dd><dt>Phone</dt><dd>902-000-0000</dd><dt>Office</dt><dd>Building, Room 000</dd></dl>
+      <dl><dt>Email</dt><dd><a href="mailto:${e.email}">${e.email}</a></dd><dt>Phone</dt><dd>902-000-0000</dd><dt>Office</dt><dd>Building, Room 000</dd><dt>CV</dt><dd><a href="#" onclick="return false">Download CV (PDF)</a></dd></dl>
       <h3>Research Axis</h3>
       <div class="p-tags">${tags(e.areas.map(areaName))}</div>
     </aside>
