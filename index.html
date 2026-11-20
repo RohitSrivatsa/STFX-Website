@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expert Directory Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .intro{background:var(--navy);color:#fff;padding:48px 0 40px;border-bottom:4px solid var(--gold)}
+  .intro h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.5vw,46px);margin:0 0 8px}
+  .intro p{color:#c9d4e3;max-width:680px;margin:0}
+  .opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:22px;padding:34px 0}
+  @media (max-width:400px){.opts{grid-template-columns:1fr}}
+  .opt{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;transition:.2s}
+  .opt:hover{box-shadow:0 12px 30px rgba(12,35,64,.14);transform:translateY(-3px)}
+  .opt img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;display:block;border-bottom:1px solid var(--line);background:var(--bg)}
+  .opt .b{padding:18px 20px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .opt .l{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-ink)}
+  .opt h2{font-family:var(--serif);font-weight:500;font-size:23px;margin:0}
+  .opt p{margin:0;color:var(--muted);font-size:14px}
+  .opt ul{margin:4px 0 0;padding-left:18px;font-size:13.5px;color:#334155}
+  .opt .go{margin-top:auto;padding-top:12px;font-weight:700;color:var(--navy)}
+  .note{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;font-size:14px;color:#334155}
+  .note h3{margin:0 0 6px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="mockbar">Design mockups · all names, photos and details are placeholder sample data</div>
+<section class="intro"><div class="wrap">
+  <h1>Research Experts Directory: design options</h1>
+  <p>Six layouts for the same directory. Every option has keyword search, sort, and filters for faculty, department and course, and each expert links to a profile page. Click any option to try it.</p>
+</div></section>
+<main class="wrap">
+  <div class="opts">
+    <a class="opt" href="option-f-classic.html"><img src="thumbs/f.png" alt="Option F preview"><div class="b">
+      <span class="l">Option F · Reference match</span><h2>Bishop’s-style layout</h2><p>Matches the layout of the Bishop’s Research Experts page, in StFX colours.</p>
+      <ul><li>Search, “Filter by axis”, “Sort by” and “Reset filters” in one row</li><li>Photo left; name, Keywords, Project(s) and “See profile” right</li><li>10 per page with numbered pagination</li></ul>
+      <span class="go">Open option F →</span></div></a>
+    <a class="opt" href="option-a-showcase.html"><img src="thumbs/a.png" alt="Option A preview"><div class="b">
+      <span class="l">Option A</span><h2>Showcase</h2><p>The most feature-rich, eye-catching version.</p>
+      <ul><li>Big hero search + research theme tiles</li><li>Sidebar filters with live counts, A–Z bar, grid/list toggle</li><li>Rich profile page with related experts</li></ul>
+      <span class="go">Open option A →</span></div></a>
+    <a class="opt" href="option-b-table.html"><img src="thumbs/b.png" alt="Option B preview"><div class="b">
+      <span class="l">Option B</span><h2>Simple table</h2><p>A clean, compact staff-directory list. Fastest to scan.</p>
+      <ul><li>All filters in one row</li><li>Click column headings to sort</li><li>Stacks into cards on phones</li></ul>
+      <span class="go">Open option B →</span></div></a>
+    <a class="opt" href="option-c-departments.html"><img src="thumbs/c.png" alt="Option C preview"><div class="b">
+      <span class="l">Option C</span><h2>Browse by department</h2><p>Closest to the Bishop’s example: experts grouped under department headings.</p>
+      <ul><li>Faculty → department menu on the left</li><li>Photo cards with “View profile”</li><li>Search and course filter on top</li></ul>
+      <span class="go">Open option C →</span></div></a>
+    <a class="opt" href="option-d-quickview.html"><img src="thumbs/d.png" alt="Option D preview"><div class="b">
+      <span class="l">Option D</span><h2>Search first + quick view</h2><p>Minimal, Google-style page. Clicking an expert opens a side panel without leaving the page.</p>
+      <ul><li>One big search box + faculty chips</li><li>Quick-view panel with summary and contact</li><li>“Open full profile” for more detail</li></ul>
+      <span class="go">Open option D →</span></div></a>
+    <a class="opt" href="option-e-az.html"><img src="thumbs/e.png" alt="Option E preview"><div class="b">
+      <span class="l">Option E</span><h2>A–Z with “group by”</h2><p>Friendly circular headshots, grouped by letter, faculty or research area.</p>
+      <ul><li>Switch grouping with one click</li><li>Jump links to each section</li><li>Search bar stays visible while scrolling</li></ul>
+      <span class="go">Open option E →</span></div></a>
+  </div>
+  <div class="note"><h3>Mix and match</h3>Any piece can move between options: for example, Option C’s department menu with Option D’s quick-view panel, or Option B’s table with Option A’s profile page.</div>
+</main>
+<footer><div class="wrap">StFX Research · Expertise Directory mockups</div></footer>
+</body>
+</html>

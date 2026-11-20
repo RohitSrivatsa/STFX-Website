@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Experts · Option F</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Layout matches the reference page; colours are StFX (swap here). */
+  :root{
+    --brand:#0C2340;      /* headings, links, buttons (reference uses purple) */
+    --brand-dark:#071628; /* reset button */
+    --accent:#F2A900;
+    --ink:#111; --grey:#a7a7a7; --line:#dcdcdc; --soft:#f6f6f6; --footer:#8d8d96;
+    --cond:"Barlow Semi Condensed","Arial Narrow",sans-serif; --body:"Source Sans 3","Source Sans Pro",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--body);color:var(--ink);background:#fff;font-size:18px;line-height:1.75}
+  a{color:inherit}
+  .wrap{max-width:1410px;margin:0 auto;padding:0 40px}
+  @media (max-width:700px){.wrap{padding:0 20px}}
+  .mockbar{background:var(--accent);color:var(--brand);font:600 13px/1.4 var(--body);text-align:center;padding:6px 16px}
+
+  /* Header */
+  header{padding:22px 0 0}
+  header .row{display:flex;align-items:center;justify-content:space-between}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--brand)}
+  .logo .crest{width:38px;height:42px;border-radius:6px 6px 18px 18px;background:var(--brand);color:var(--accent);display:grid;place-items:center;font:700 22px var(--cond)}
+  .logo b{display:block;font:700 22px/1 var(--cond);letter-spacing:.02em}
+  .logo small{display:block;font:500 11px/1.3 var(--cond);letter-spacing:.2em;text-transform:uppercase}
+  .burger{border:0;background:none;cursor:pointer;color:var(--brand);padding:6px}
+  .sitesearch{max-width:420px;margin:26px auto 0;position:relative}
+  .sitesearch input{width:100%;border:0;border-bottom:1px solid transparent;font:400 22px var(--body);color:#555;padding:6px 40px 6px 0;background:none}
+  .sitesearch input::placeholder{color:#9a9a9a}
+  .sitesearch input:focus{outline:none;border-bottom-color:var(--line)}
+  .sitesearch svg{position:absolute;right:4px;top:50%;transform:translateY(-50%);color:#9a9a9a}
+
+  /* Title + breadcrumbs */
+  .pagehead{padding:120px 0 0}
+  .pagehead h1{font:600 clamp(40px,5vw,58px)/1.1 var(--cond);color:var(--grey);margin:0 0 24px}
+  .crumbs{display:inline-block;border:1px solid #eee;box-shadow:0 1px 3px rgba(0,0,0,.05);padding:6px 20px;font-size:14px}
+  .crumbs a{color:#222}
+  .intro{margin:20px 0 34px;font-size:20px}
+
+  h2.brandh{font:600 clamp(30px,3.4vw,40px)/1.2 var(--cond);color:var(--brand);margin:0 0 26px}
+
+  /* Accordion */
+  details.axis{border:1px solid #e3e3e3;margin-bottom:28px}
+  details.axis summary{list-style:none;cursor:pointer;padding:16px 18px;font-size:18px;color:#333;display:flex;justify-content:space-between;align-items:center}
+  details.axis summary::-webkit-details-marker{display:none}
+  details.axis summary svg{transition:transform .2s}
+  details.axis[open] summary svg{transform:rotate(180deg)}
+  details.axis .content{padding:4px 18px 18px;font-size:16px;line-height:1.6}
+  details.axis dl{margin:0} details.axis dt{font-weight:700;margin-top:12px} details.axis dd{margin:2px 0 0;color:#444}
+
+  /* Filters row */
+  .filters{display:grid;grid-template-columns:repeat(3,minmax(0,324px)) auto;gap:32px;align-items:end;margin-top:60px}
+  @media (max-width:1000px){.filters{grid-template-columns:1fr;gap:22px}}
+  .filters label{display:block;font-weight:700;font-size:16px;margin-bottom:6px}
+  .ctl{position:relative}
+  .ctl input,.ctl select{width:100%;height:40px;border:1px solid #c9c9c9;border-radius:0;background:#fff;font:400 15px var(--body);padding:0 36px 0 8px;appearance:none;-webkit-appearance:none;color:#222}
+  .ctl input::placeholder{color:#333}
+  .ctl input::-webkit-calendar-picker-indicator,.ctl input::-webkit-list-button{display:none!important;opacity:0}
+  .ctl input::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+  .ctl input:focus,.ctl select:focus{outline:2px solid var(--brand);outline-offset:-1px}
+  .ctl svg{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;color:#888}
+  .reset{height:34px;margin-bottom:3px;padding:0 18px;border:0;background:var(--brand-dark);color:#fff;font:500 19px var(--cond);cursor:pointer;justify-self:start}
+  .reset:hover{background:var(--brand)}
+
+  .resultsbar{background:var(--soft);padding:16px 24px;margin:32px 0 0;font-size:19px}
+
+  /* Expert rows */
+  .expert{display:grid;grid-template-columns:300px 1fr;gap:118px;padding:64px 0 24px 86px;align-items:start}
+  @media (max-width:1100px){.expert{gap:48px;padding-left:0}}
+  @media (max-width:820px){.expert{grid-template-columns:1fr;gap:28px;padding:48px 0 16px}.expert .ph{margin:0 auto}}
+  .ph{width:300px;max-width:100%;aspect-ratio:300/292;display:grid;place-items:end center;overflow:hidden;position:relative}
+  .ph span{position:absolute;left:8px;top:8px;font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.85);padding:2px 8px;color:#555}
+  .expert h3{font:600 34px/1.2 var(--cond);margin:12px 0 26px}
+  .expert p{margin:0 0 24px}
+  .expert b{font-weight:700}
+  .see{display:inline-flex;align-items:center;gap:10px;font:600 16px var(--cond);text-transform:uppercase;color:var(--brand);text-decoration:none;letter-spacing:.01em}
+  .see:hover{text-decoration:underline}
+  mark{background:#fff1c7;padding:0 1px}
+  .none{padding:60px 0;text-align:center;color:#555}
+
+  /* Pagination */
+  .pager{display:flex;justify-content:center;gap:18px;margin:60px 0 80px;align-items:center}
+  .pager button{min-width:46px;height:46px;border:2px solid transparent;border-radius:3px;background:none;font:400 18px var(--body);cursor:pointer;padding:0 8px}
+  .pager button.on{border-color:var(--brand);color:#999;cursor:default}
+  .pager button:hover:not(.on){color:var(--brand)}
+
+  /* Footer */
+  .join{display:flex;justify-content:flex-end;align-items:center;gap:34px;padding:10px 0 40px;flex-wrap:wrap}
+  .join h2{font:400 clamp(32px,4.4vw,46px)/1 var(--cond);color:var(--footer);margin:0;letter-spacing:.01em}
+  .join h2 b{font-weight:700}
+  .apply{display:inline-flex;align-items:center;gap:26px;border:2px solid var(--brand);border-radius:40px;padding:12px 30px;font:500 18px/1 var(--cond);color:var(--footer);text-decoration:none}
+  .apply:hover{background:var(--brand);color:#fff}
+  .fcols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 30px;padding-bottom:22px;border-bottom:1px solid #777}
+  @media (max-width:760px){.fcols{grid-template-columns:1fr}.join{justify-content:flex-start}}
+  .fcols h4{font:400 24px var(--cond);color:var(--footer);margin:0 0 6px;text-transform:uppercase}
+  .fcols a{display:block;font:400 17px/2 var(--cond);color:#a0a0a8;text-decoration:none}
+  .fcols a:hover{color:var(--brand)}
+  .copy{font-size:12px;color:#888;padding:20px 0 40px}
+
+
+  .back{display:inline-block;margin:24px 0 10px;font:600 16px var(--cond);text-transform:uppercase;color:var(--brand);text-decoration:none}
+  .back:hover{text-decoration:underline}
+  .prof{display:grid;grid-template-columns:300px 1fr;gap:80px;align-items:start;margin:40px 0 70px}
+  @media (max-width:820px){.prof{grid-template-columns:1fr;gap:28px}}
+  .prof .ph{width:300px}
+  .prof h3{font:600 26px var(--cond);color:var(--brand);margin:40px 0 10px}
+  .prof h3:first-child{margin-top:0}
+  .prof p{margin:0 0 14px}
+  .ph-text{background:repeating-linear-gradient(-45deg,#fafafa,#fafafa 10px,#f1f1f1 10px,#f1f1f1 20px);border:1px dashed #ccc;padding:14px 16px;color:#666;font-size:16px}
+  .side dl{margin:20px 0 0;font-size:16px}.side dt{font-weight:700;margin-top:12px}.side dd{margin:0}
+
+  #profileView{display:none} body.prof #listView{display:none} body.prof #profileView{display:block}
+</style>
+</head>
+<body>
+<div class="mockbar">Option F (single file: list + profiles) · layout matched to the Bishop’s page you sent · StFX colours · placeholder people — <a href="index.html">see all options</a></div>
+
+<header class="wrap">
+  <div class="row">
+    <a class="logo" href="#experts"><span class="crest">X</span><span><small>St. Francis Xavier</small><b>UNIVERSITY</b></span></a>
+    <button class="burger" aria-label="Menu"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+  </div>
+  <div class="sitesearch"><input type="search" placeholder="Search …" aria-label="Search site">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M10 3a7 7 0 0 1 5.6 11.2l4.6 4.6-1.4 1.4-4.6-4.6A7 7 0 1 1 10 3zm0 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10z"/></svg></div>
+</header>
+
+<main class="wrap" id="listView">
+  <section class="pagehead">
+    <h1>Research Experts</h1>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a> / <a href="#">Research</a> / Research Experts</nav>
+    <p class="intro">Learn how our research is structured and connect with experts by specialization.</p>
+  </section>
+
+  <h2 class="brandh">Explore our Research Areas</h2>
+  <details class="axis">
+    <summary>Research Axis Descriptions: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></summary>
+    <div class="content"><dl id="axes"></dl></div>
+  </details>
+
+  <h2 class="brandh">Find a Research Expert</h2>
+  <div class="filters">
+    <div><label for="q">Search:</label><div class="ctl">
+      <input id="q" type="search" placeholder="Select..." list="suggest" autocomplete="off"><datalist id="suggest"></datalist>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div></div>
+    <div><label for="axis">Filter by axis:</label><div class="ctl"><select id="axis"></select>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div></div>
+    <div><label for="sort">Sort by:</label><div class="ctl"><select id="sort">
+      <option value="">Select…</option><option value="first-az">First name (A–Z)</option><option value="first-za">First name (Z–A)</option>
+      <option value="last-az">Last name (A–Z)</option><option value="last-za">Last name (Z–A)</option></select>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div></div>
+    <button class="reset" id="reset" type="button">Reset filters</button>
+  </div>
+
+  <div class="resultsbar" id="count"></div>
+  <div id="list"></div>
+  <nav class="pager" id="pager" aria-label="Pagination"></nav>
+</main>
+
+<main class="wrap" id="profileView">
+  <section class="pagehead" style="padding-top:90px">
+    <h1 id="pname"></h1>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="#">Home</a> / <a href="#">Research</a> / <a href="#experts">Research Experts</a> / <span id="pcrumb"></span></nav>
+  </section>
+  <div id="proot"></div>
+</main>
+<footer class="wrap">
+  <div class="join"><h2>JOIN THE <b>X</b>AVERIAN COMMUNITY</h2><a class="apply" href="#">Apply<br>Now <span>→</span></a></div>
+  <div class="fcols">
+    <div><h4>Current Students</h4><a href="#">Library</a><a href="#">Academic Calendar</a><a href="#">Sessional Dates</a><a href="#">Timetable</a><a href="#">Student Services</a></div>
+    <div><h4>Faculty &amp; Staff</h4><a href="#">IT Services</a><a href="#">Teaching &amp; Learning Centre</a><a href="#">Mail &amp; Print Services</a><a href="#">Security &amp; Parking</a></div>
+    <div><h4>Parents &amp; Advisors</h4><a href="#">Admissions</a><a href="#">Tuition &amp; Fees</a><a href="#">Resources for Guidance Counsellors</a><a href="#">Resources for Parents of Students</a></div>
+    <div><h4>Arts &amp; Community</h4><a href="#">Events</a><a href="#">Art Gallery</a><a href="#">Lecture Series</a><a href="#">Athletics &amp; Recreation</a></div>
+    <div><h4>Let’s Connect</h4><a href="#">Contact Us</a><a href="#">Directions and Maps</a><a href="#">News</a><a href="#">Media Inquiries</a><a href="#">Chairs and Deans</a></div>
+    <div><h4>About StFX</h4><a href="#">Governance and Administration</a><a href="#">Executive Leadership</a><a href="#">Strategic Plan</a><a href="#">Careers</a></div>
+  </div>
+  <div class="copy">Copyright © 2026 St. Francis Xavier University · Disclaimer · mockup</div>
+</footer>
+
+<script>
+/* Shared sample data + helpers for options B–E. Replace RAW with real faculty data. */
+const AREAS = [
+  {id:'climate', name:'Climate & Environment'}, {id:'ocean', name:'Coastal & Ocean Science'},
+  {id:'health', name:'Health & Wellbeing'}, {id:'data', name:'Data, AI & Computing'},
+  {id:'community', name:'Indigenous & Community Studies'}, {id:'economy', name:'Business & Economy'},
+  {id:'culture', name:'Culture, Language & Heritage'}, {id:'education', name:'Education & Learning'},
+];
+const DEPTS = {
+  'Biology':['BIOL','Science'], 'Chemistry':['CHEM','Science'], 'Computer Science':['CSCI','Science'],
+  'Earth Sciences':['ESCI','Science'], 'Mathematics & Statistics':['MATH','Science'], 'Physics':['PHYS','Science'],
+  'Human Nutrition':['HNU','Science'], 'Nursing':['NURS','Science'],
+  'History':['HIST','Arts'], 'English':['ENGL','Arts'], 'Political Science':['PSCI','Arts'], 'Psychology':['PSYC','Arts'],
+  'Anthropology':['ANTH','Arts'], 'Celtic Studies':['CELT','Arts'],
+  'Business Administration':['BSAD','Business'], 'Economics':['ECON','Business'],
+  'Education':['EDUC','Education'],
+};
+const COURSE_TITLES = {
+  BIOL:['Ecology','Marine Biology','Genetics','Field Methods'], CHEM:['Organic Chemistry','Environmental Chemistry','Analytical Methods'],
+  CSCI:['Intro to Programming','Machine Learning','Data Structures','Human–Computer Interaction'],
+  ESCI:['Coastal Geomorphology','Climate Systems','Geology of Atlantic Canada'], MATH:['Statistics I','Applied Modelling','Linear Algebra'],
+  PHYS:['Quantum Mechanics','Climate Physics','Mechanics'], HNU:['Community Nutrition','Food Systems'], NURS:['Rural Health Practice','Mental Health Nursing'],
+  HIST:['Atlantic Canada History','The Modern World','Oral History'], ENGL:['Canadian Literature','Creative Writing','Digital Storytelling'],
+  PSCI:['Canadian Politics','Public Policy','Global Governance'], PSYC:['Health Psychology','Developmental Psychology','Research Methods'],
+  ANTH:['Indigenous Peoples of Canada','Ethnographic Methods'], CELT:['Scottish Gaelic I','Celtic Folklore'],
+  BSAD:['Entrepreneurship','Marketing Analytics','Organizational Behaviour'], ECON:['Microeconomics','Fisheries Economics','Development Economics'],
+  EDUC:['Inclusive Classrooms','Curriculum Design','Educational Technology'],
+};
+// [first, last, rank, dept, areas, keywords, yearJoined, publications, mediaReady]
+const RAW = [
+ ['Amara','Okafor','Professor','Biology',['ocean','climate'],['marine ecology','kelp forests','coastal ecosystems','biodiversity'],2009,64,1],
+ ['Liam','MacNeil','Associate Professor','Earth Sciences',['ocean','climate'],['coastal erosion','sea-level rise','geomorphology'],2014,38,1],
+ ['Sophie','Chiasson','Assistant Professor','Psychology',['health','education'],['mental health','adolescence','resilience'],2021,17,1],
+ ['Daniel','Whitecap','Associate Professor','Anthropology',['community','culture'],['Indigenous knowledge','land-based learning','oral tradition'],2016,29,1],
+ ['Priya','Raman','Professor','Computer Science',['data'],['machine learning','computer vision','ethical AI'],2010,82,1],
+ ['Ewan','MacKinnon','Professor','Celtic Studies',['culture'],['Scottish Gaelic','folklore','language revitalization'],2004,45,0],
+ ['Hannah','Boudreau','Assistant Professor','Nursing',['health','community'],['rural health','palliative care','health equity'],2022,11,1],
+ ['Marcus','Whitford','Associate Professor','Economics',['economy','ocean'],['fisheries economics','resource management','labour markets'],2015,33,1],
+ ['Leah','Doucette','Professor','Education',['education','community'],['inclusive education','teacher development','literacy'],2008,51,0],
+ ['Tomás','Alvarez','Assistant Professor','Physics',['climate','data'],['atmospheric physics','climate modelling','remote sensing'],2020,19,0],
+ ['Noah','Fraser','Associate Professor','History',['culture','community'],['Atlantic Canada','oral history','migration'],2013,27,1],
+ ['Isla','Campbell','Professor','English',['culture','education'],['Canadian literature','poetry','digital humanities'],2006,40,0],
+ ['Ravi','Menon','Associate Professor','Business Administration',['economy','data'],['entrepreneurship','innovation','marketing analytics'],2017,24,1],
+ ['Claire','Gillis','Assistant Professor','Human Nutrition',['health','community'],['food security','community nutrition','public health'],2021,14,1],
+ ['Owen','Chisholm','Professor','Chemistry',['climate'],['green chemistry','catalysis','environmental toxins'],2007,71,0],
+ ['Mei','Lin','Assistant Professor','Mathematics & Statistics',['data','health'],['biostatistics','epidemiological modelling','Bayesian methods'],2023,9,0],
+ ['Fatima','Haddad','Associate Professor','Political Science',['community','economy'],['public policy','immigration','rural governance'],2016,22,1],
+ ['Jacob','Landry','Assistant Professor','Biology',['ocean','climate'],['aquaculture','fish genetics','ocean warming'],2022,13,0],
+ ['Aisling','Murphy','Professor','Psychology',['health'],['neuroscience','sleep','cognitive ageing'],2005,58,1],
+ ['Kwame','Mensah','Associate Professor','Computer Science',['data','education'],['human–computer interaction','accessibility','educational technology'],2018,21,0],
+ ['Nadia','Petrova','Assistant Professor','Earth Sciences',['climate'],['glaciology','paleoclimate','geochemistry'],2024,6,0],
+ ['Sean','MacDonald','Professor','Business Administration',['economy','community'],['co-operatives','social enterprise','community development'],2003,49,1],
+ ['Elena','Rossi','Associate Professor','Education',['education','data'],['STEM education','assessment','online learning'],2019,18,0],
+ ['Grace','Pictou','Assistant Professor','Nursing',['health','community'],['Indigenous health','maternal health','community care'],2023,7,1],
+];
+const FACULTIES = ['Arts','Science','Business','Education'];
+const areaName = id => AREAS.find(a=>a.id===id).name;
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TONES = [['#0C2340','#1d4373'],['#13315a','#2a5a8f'],['#1b2b40','#3b5574'],['#0e2a4a','#c08700']];
+
+const EXPERTS = RAW.map((r,i)=>{
+  const [first,last,rank,dept,areas,keywords,joined,pubs,media] = r;
+  const [code,faculty] = DEPTS[dept];
+  const t = COURSE_TITLES[code];
+  const courses = [0,1].map(k=>({code:`${code} ${(k+1)*100+10+(i*7+k*13)%80}`, title:t[(i+k)%t.length]}));
+  const e = {id:norm(`${first}-${last}`).replace(/[^a-z-]/g,''), first,last,name:`Dr. ${first} ${last}`,rank,dept,code,faculty,
+    areas,keywords,joined,pubs,media:!!media,courses,tone:TONES[i%TONES.length],
+    email:norm(first[0]+last).replace(/[^a-z]/g,'')+'@example.ca'};
+  e.hay = norm([e.name,rank,dept,faculty,areas.map(areaName).join(' '),keywords.join(' '),
+    courses.map(c=>`${c.code} ${c.code.replace(' ','')} ${c.title}`).join(' ')].join(' '));
+  return e;
+});
+
+/* state: {q, faculty, dept, course, area, sort} */
+function tokens(q){ return norm(q||'').split(/\s+/).filter(Boolean); }
+function filterExperts(s){
+  const toks = tokens(s.q);
+  return EXPERTS.filter(e=>
+    toks.every(t=>e.hay.includes(t)) &&
+    (!s.faculty || e.faculty===s.faculty) &&
+    (!s.dept || e.dept===s.dept) &&
+    (!s.course || e.courses.some(c=>c.code===s.course)) &&
+    (!s.area || e.areas.includes(s.area)));
+}
+function relevance(e,q){
+  let n=0; for(const t of tokens(q)){ if(norm(e.name).includes(t)) n+=10; if(e.keywords.some(k=>norm(k).includes(t))) n+=5; if(norm(e.dept).includes(t)) n+=3; }
+  return n;
+}
+function sortExperts(list,sort,q){
+  const f = {
+    relevance:(a,b)=>relevance(b,q)-relevance(a,q)||a.last.localeCompare(b.last),
+    'az':(a,b)=>a.last.localeCompare(b.last), 'za':(a,b)=>b.last.localeCompare(a.last),
+    'dept':(a,b)=>a.dept.localeCompare(b.dept)||a.last.localeCompare(b.last),
+    'newest':(a,b)=>b.joined-a.joined, 'pubs':(a,b)=>b.pubs-a.pubs,
+  }[sort||'az'];
+  return [...list].sort(f);
+}
+function hl(text,q){
+  const toks = tokens(q); let out = esc(text); if(!toks.length) return out;
+  return out.replace(new RegExp('('+toks.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','gi'),'<mark>$1</mark>');
+}
+const SIL = `<svg viewBox="0 0 100 90" aria-hidden="true" style="width:62%;display:block"><circle cx="50" cy="32" r="20" fill="rgba(255,255,255,.85)"/><path d="M8 90c2-24 20-36 42-36s40 12 42 36z" fill="rgba(255,255,255,.85)"/></svg>`;
+function photo(e,style=''){
+  return `<div class="photo" style="background:radial-gradient(circle at 30% 20%,${e.tone[1]},${e.tone[0]} 70%);display:grid;place-items:end center;overflow:hidden;${style}" role="img" aria-label="Photo placeholder">${SIL}</div>`;
+}
+const SORTS = [['relevance','Best match'],['az','Last name A–Z'],['za','Last name Z–A'],['dept','Department'],['newest','Newest faculty'],['pubs','Most publications']];
+
+/* <select> option builders */
+function opts(list,sel,all){ return `<option value="">${all}</option>`+list.map(([v,l])=>`<option value="${esc(v)}" ${v===sel?'selected':''}>${esc(l)}</option>`).join(''); }
+const facultyOpts = s => opts(FACULTIES.map(f=>[f,'Faculty of '+f]),s.faculty,'All faculties');
+const deptOpts = s => opts(Object.keys(DEPTS).filter(d=>!s.faculty||DEPTS[d][1]===s.faculty).sort().map(d=>[d,d]),s.dept,'All departments');
+function courseOpts(s){
+  const seen={}; EXPERTS.filter(e=>(!s.dept||e.dept===s.dept)&&(!s.faculty||e.faculty===s.faculty)).forEach(e=>e.courses.forEach(c=>seen[c.code]=c.title));
+  return opts(Object.entries(seen).sort().map(([c,t])=>[c,`${c} — ${t}`]),s.course,'Any course');
+}
+const areaOpts = s => opts(AREAS.map(a=>[a.id,a.name]),s.area,'All research areas');
+const sortOpts = s => SORTS.map(([v,l])=>`<option value="${v}" ${v===s.sort?'selected':''}>${l}</option>`).join('');
+const profileUrl = (e,from) => `profile.html?id=${e.id}&from=${encodeURIComponent(from)}`;
+
+/* Wire standard controls: ids q, faculty, dept, course, area, sort (any may be absent) */
+function bindControls(S,render){
+  const $=id=>document.getElementById(id);
+  const fill=()=>{ if($('faculty'))$('faculty').innerHTML=facultyOpts(S); if($('dept'))$('dept').innerHTML=deptOpts(S);
+    if($('course'))$('course').innerHTML=courseOpts(S); if($('area'))$('area').innerHTML=areaOpts(S); if($('sort'))$('sort').innerHTML=sortOpts(S); };
+  let t; if($('q')) $('q').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{S.q=e.target.value.trim();render()},120)});
+  const on=(id,fn)=>$(id)&&$(id).addEventListener('change',e=>{fn(e.target.value);fill();render()});
+  on('faculty',v=>{S.faculty=v;S.dept='';S.course=''}); on('dept',v=>{S.dept=v;S.course=''});
+  on('course',v=>S.course=v); on('area',v=>S.area=v); on('sort',v=>S.sort=v);
+  S.reset=()=>{Object.assign(S,{q:'',faculty:'',dept:'',course:'',area:'',sort:S.defaultSort||'az'}); if($('q'))$('q').value=''; fill(); render();};
+  S.fill=fill; fill();
+}
+
+</script>
+<script>
+const PER_PAGE = 10;
+const AXIS_DESC = 'Placeholder description of this research axis: the questions it covers, the departments involved, and the research centres linked to it.';
+// One-line "Project(s)" summary per expert (placeholder text built from keywords)
+EXPERTS.forEach(e=>{
+  const k = e.keywords;
+  e.project = `Research focuses on ${k[0]} and ${k[1]}${k[2]?`, with projects exploring ${k.slice(2).join(' and ')}`:''}. Placeholder summary to be replaced with the expert’s own description.`;
+  e.hay += ' ' + norm(e.project);
+});
+const S = {q:'',area:'',sort:'',page:1};
+const $ = id=>document.getElementById(id);
+
+$('axes').innerHTML = AREAS.map(a=>`<dt>${a.name}</dt><dd>${AXIS_DESC}</dd>`).join('');
+$('axis').innerHTML = `<option value="">Select…</option>` + AREAS.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');
+$('suggest').innerHTML = [...new Set(EXPERTS.flatMap(e=>[`${e.first} ${e.last}`,...e.keywords]))].sort().map(v=>`<option value="${esc(v)}">`).join('');
+
+function sorted(list){
+  const s = S.sort || 'first-az';
+  const key = s.startsWith('first') ? e=>e.first+' '+e.last : e=>e.last+' '+e.first;
+  return [...list].sort((a,b)=>key(a).localeCompare(key(b)) * (s.endsWith('za')?-1:1));
+}
+const GREY_SIL = `<svg viewBox="0 0 100 90" style="width:66%;display:block" aria-hidden="true"><circle cx="50" cy="33" r="19" fill="#b9bec6"/><path d="M10 90c2-23 19-35 40-35s38 12 40 35z" fill="#9aa1ab"/></svg>`;
+
+function render(){
+  const all = sorted(filterExperts({q:S.q,area:S.area}));
+  const pages = Math.max(1,Math.ceil(all.length/PER_PAGE));
+  S.page = Math.min(S.page,pages);
+  const start = (S.page-1)*PER_PAGE, items = all.slice(start,start+PER_PAGE);
+  $('count').textContent = all.length ? `${start+1}-${start+items.length} of ${all.length} results` : '0 results';
+  $('list').innerHTML = items.length ? items.map(e=>`
+    <article class="expert">
+      <div class="ph" style="background:linear-gradient(180deg,#e9eaec,#d7d9dd)" role="img" aria-label="Headshot placeholder"><span>Photo</span>${GREY_SIL}</div>
+      <div>
+        <h3>${hl(e.first+' '+e.last,S.q)}</h3>
+        <p><b>Keywords:</b> ${hl(e.keywords.map((k,i)=>i?k:k[0].toUpperCase()+k.slice(1)).join(', '),S.q)}</p>
+        <p><b>Project(s):</b><br>${hl(e.project,S.q)}</p>
+        <a class="see" href="#profile/${e.id}">See profile <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </article>`).join('') : `<div class="none">No experts match your search.</div>`;
+  $('pager').innerHTML = pages>1 ? Array.from({length:pages},(_,i)=>`<button class="${i+1===S.page?'on':''}" data-p="${i+1}" ${i+1===S.page?'aria-current="page"':''}>${i+1}</button>`).join('')
+    + (S.page<pages?`<button data-p="${S.page+1}">Next</button>`:'') : '';
+}
+let t;
+$('q').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{S.q=e.target.value.trim();S.page=1;render()},120)});
+$('axis').onchange=e=>{S.area=e.target.value;S.page=1;render()};
+$('sort').onchange=e=>{S.sort=e.target.value;S.page=1;render()};
+$('reset').onclick=()=>{Object.assign(S,{q:'',area:'',sort:'',page:1});$('q').value='';$('axis').value='';$('sort').value='';render()};
+$('pager').onclick=e=>{const b=e.target.closest('[data-p]');if(!b)return;S.page=+b.dataset.p;render();$('count').scrollIntoView({behavior:'smooth'})};
+render();
+
+function showProfile(id){
+  const e = EXPERTS.find(x=>x.id===id); const full=e.first+' '+e.last;
+  document.getElementById('pname').textContent=full; document.getElementById('pcrumb').textContent=full;
+  document.getElementById('proot').innerHTML = `
+  <a class="back" href="#experts">← Back to Research Experts</a>
+  <div class="prof">
+    <div class="side">
+      <div class="ph" style="background:linear-gradient(180deg,#e9eaec,#d7d9dd)" role="img" aria-label="Headshot placeholder"><span>Photo</span>${GREY_SIL}</div>
+      <dl><dt>Position</dt><dd>${e.rank}</dd><dt>Department</dt><dd>${e.dept}</dd><dt>Email</dt><dd>${e.email}</dd><dt>Phone</dt><dd>902-000-0000</dd><dt>Office</dt><dd>Building, Room 000</dd></dl>
+    </div>
+    <div>
+      <h3>Biography</h3><div class="ph-text">Biography placeholder. 2–3 paragraphs supplied by the faculty member.</div>
+      <h3>Keywords</h3><p>${e.keywords.join(', ')}</p>
+      <h3>Research Axis</h3><p>${e.areas.map(areaName).join(', ')}</p>
+      <h3>Project(s)</h3><div class="ph-text">Detailed project descriptions placeholder.</div>
+      <h3>Courses Taught</h3><p>${e.courses.map(c=>`<b>${c.code}</b> ${c.title}`).join('<br>')}</p>
+      <h3>Selected Publications</h3><div class="ph-text">Publication list placeholder.</div>
+    </div>
+  </div>`;
+
+  document.title = full+' · Research Experts';
+}
+/* Page switching. Clicks switch views directly (works even inside previews and
+   embeds that block address changes); the #profile/<id> address is updated when
+   the browser allows it, so Back/Forward and shared links also work. */
+let listScroll = 0;
+function view(id){
+  const onProfile = document.body.classList.contains('prof');
+  if(id && EXPERTS.some(x=>x.id===id)){
+    if(!onProfile) listScroll = scrollY;
+    showProfile(id); document.body.classList.add('prof'); scrollTo(0,0);
+  } else {
+    document.body.classList.remove('prof'); document.title='Research Experts';
+    if(onProfile) requestAnimationFrame(()=>scrollTo(0,listScroll));
+  }
+}
+function idFromHash(h){ const m = (h||'').match(/^#profile\/([a-z-]+)$/); return m ? m[1] : null; }
+function go(hash){
+  view(idFromHash(hash));
+  try{ if(location.hash !== hash) history.pushState(null,'',hash); }catch(err){ /* address bar not available here */ }
+}
+document.addEventListener('click',ev=>{
+  const a = ev.target.closest('a[href^="#profile/"], a[href="#experts"]');
+  if(!a || ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
+  ev.preventDefault(); go(a.getAttribute('href'));
+});
+addEventListener('popstate',()=>view(idFromHash(location.hash)));
+addEventListener('hashchange',()=>view(idFromHash(location.hash)));
+view(idFromHash(location.hash));
+</script>
+</body>
+</html>

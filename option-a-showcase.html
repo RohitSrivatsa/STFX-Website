@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find an Expert · StFX Research</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Brand tokens (swap here to re-theme) ---------- */
+  :root{
+    --navy:#0C2340; --navy-2:#13315a; --navy-3:#1d4373;
+    --gold:#F2A900; --gold-soft:#fff4d6; --gold-ink:#7a5500;
+    --ink:#14202e; --muted:#5b6878; --line:#e3e7ed; --bg:#f6f7f9; --card:#ffffff;
+    --radius:16px; --shadow:0 1px 2px rgba(12,35,64,.06),0 8px 24px rgba(12,35,64,.06);
+    --shadow-lg:0 2px 4px rgba(12,35,64,.08),0 20px 40px rgba(12,35,64,.14);
+    --serif:"Fraunces",Georgia,serif; --sans:"Inter",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  button,input,select{font:inherit;color:inherit}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  mark{background:var(--gold-soft);color:var(--gold-ink);border-radius:3px;padding:0 2px}
+
+  /* ---------- Top bars ---------- */
+  .mockbar{background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;text-align:center;padding:6px 16px}
+  header.site{background:var(--navy);color:#fff;position:sticky;top:0;z-index:40;border-bottom:1px solid rgba(255,255,255,.08)}
+  header.site .wrap{display:flex;align-items:center;gap:16px;height:64px}
+  .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .brand .mark{width:38px;height:38px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--serif);font-weight:700;color:var(--gold);font-size:20px}
+  .brand b{display:block;font-size:15px;letter-spacing:.2px}
+  .brand small{display:block;font-size:12px;color:#b9c6d8}
+  header nav{margin-left:auto;display:flex;gap:22px;font-size:14px}
+  header nav a{text-decoration:none;color:#d6deea}
+  header nav a:hover,header nav a.on{color:var(--gold)}
+  @media (max-width:760px){header nav{display:none}}
+
+  /* ---------- Hero ---------- */
+  .hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:64px 0 120px}
+  .hero::before{content:"";position:absolute;right:-180px;top:-160px;width:620px;height:620px;border-radius:50%;
+    border:70px solid rgba(242,169,0,.10);}
+  .hero::after{content:"";position:absolute;right:60px;bottom:-240px;width:420px;height:420px;border-radius:50%;
+    border:2px dashed rgba(255,255,255,.12)}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700}
+  .hero .eyebrow::before{content:"";width:28px;height:2px;background:var(--gold)}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(36px,6vw,68px);line-height:1.02;margin:14px 0 14px;max-width:820px;letter-spacing:-.01em}
+  .hero h1 em{font-style:italic;color:var(--gold)}
+  .hero p.lead{color:#c9d4e3;max-width:600px;font-size:17px;margin:0 0 30px}
+  .searchbox{position:relative;max-width:760px;z-index:2}
+  .searchbox input{width:100%;height:64px;border-radius:999px;border:0;padding:0 150px 0 58px;font-size:17px;background:#fff;color:var(--ink);box-shadow:0 10px 40px rgba(0,0,0,.25)}
+  .searchbox input:focus{outline:3px solid var(--gold);outline-offset:2px}
+  .searchbox svg{position:absolute;left:22px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .searchbox .kbd{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center}
+  .searchbox .kbd span{border:1px solid var(--line);border-radius:6px;padding:1px 7px;background:var(--bg)}
+  .searchbox .clear{position:absolute;right:16px;top:50%;transform:translateY(-50%);border:0;background:var(--bg);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;display:none}
+  .searchbox.has .clear{display:block}.searchbox.has .kbd{display:none}
+  .suggest{margin-top:16px;font-size:14px;color:#9fb0c6;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .suggest button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:#e6ecf4;border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px}
+  .suggest button:hover{background:rgba(242,169,0,.18);border-color:var(--gold)}
+  .stats{display:flex;gap:40px;margin-top:40px;flex-wrap:wrap}
+  .stats div b{display:block;font-family:var(--serif);font-size:34px;color:#fff;font-weight:500}
+  .stats div span{font-size:13px;color:#9fb0c6}
+
+  /* ---------- Theme tiles ---------- */
+  .themes{margin-top:-78px;position:relative;z-index:3}
+  .themes-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:12px}
+  .theme{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 14px;text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:.18s;display:flex;flex-direction:column;gap:10px;min-height:120px}
+  .theme:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+  .theme .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--gold-soft);font-size:18px}
+  .theme b{font-size:13.5px;line-height:1.25}
+  .theme small{color:var(--muted);font-size:12px;margin-top:auto}
+  .theme.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .theme.on .ic{background:var(--gold)} .theme.on small{color:#b9c6d8}
+  @media (max-width:1100px){.themes-grid{grid-template-columns:repeat(4,1fr)}}
+  @media (max-width:560px){.themes-grid{grid-template-columns:repeat(2,1fr)}}
+
+  /* ---------- Directory layout ---------- */
+  .directory{display:grid;grid-template-columns:280px 1fr;gap:28px;padding:40px 0 80px}
+  @media (max-width:960px){.directory{grid-template-columns:1fr}}
+  aside.filters{position:sticky;top:84px;align-self:start;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);max-height:calc(100vh - 104px);overflow:auto}
+  @media (max-width:960px){aside.filters{position:static;max-height:none;display:none}aside.filters.open{display:block}}
+  .f-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+  .f-head h2{font-size:16px;margin:0}
+  .linkbtn{background:none;border:0;color:var(--navy-3);font-size:13px;font-weight:600;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+  .fgroup{border-top:1px solid var(--line);padding:16px 0 4px;margin-top:12px}
+  .fgroup h3{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 10px;font-weight:700}
+  .check{display:flex;align-items:center;gap:10px;font-size:14px;padding:5px 0;cursor:pointer}
+  .check input{accent-color:var(--navy);width:16px;height:16px}
+  .check .n{margin-left:auto;font-size:12px;color:var(--muted);background:var(--bg);border-radius:999px;padding:0 8px}
+  .check.zero{opacity:.45}
+  select.sel,input.txt{width:100%;height:40px;border:1px solid var(--line);border-radius:10px;padding:0 12px;background:#fff;font-size:14px}
+  select.sel:focus,input.txt:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;font-size:12.5px;cursor:pointer}
+  .chip:hover{border-color:var(--navy-3)}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .toggle{display:flex;align-items:center;justify-content:space-between;font-size:14px;cursor:pointer;padding:4px 0}
+  .toggle input{appearance:none;width:40px;height:22px;border-radius:999px;background:#cfd6df;position:relative;cursor:pointer;transition:.2s}
+  .toggle input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+  .toggle input:checked{background:var(--navy)}.toggle input:checked::after{left:21px;background:var(--gold)}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .count{font-size:15px}.count b{font-family:var(--serif);font-size:22px;font-weight:500}
+  .toolbar .right{margin-left:auto;display:flex;gap:10px;align-items:center}
+  .sortwrap{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+  .sortwrap select{height:38px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:#fff;font-size:14px;color:var(--ink)}
+  .viewtog{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+  .viewtog button{border:0;background:none;padding:8px 10px;cursor:pointer;color:var(--muted);display:grid;place-items:center}
+  .viewtog button.on{background:var(--navy);color:var(--gold)}
+  .mfilter{display:none;border:1px solid var(--line);background:#fff;border-radius:10px;height:38px;padding:0 14px;font-weight:600;cursor:pointer}
+  @media (max-width:960px){.mfilter{display:inline-flex;align-items:center;gap:6px}}
+  .active{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;min-height:0}
+  .pill{display:inline-flex;align-items:center;gap:6px;background:var(--gold-soft);color:var(--gold-ink);border-radius:999px;padding:4px 6px 4px 12px;font-size:13px;font-weight:600}
+  .pill button{border:0;background:rgba(122,85,0,.12);border-radius:50%;width:20px;height:20px;cursor:pointer;color:var(--gold-ink);line-height:1}
+  .az{display:flex;flex-wrap:wrap;gap:2px;margin-bottom:18px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:6px}
+  .az button{border:0;background:none;width:30px;height:30px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink)}
+  .az button:hover{background:var(--bg)}
+  .az button.on{background:var(--gold);color:var(--navy)}
+  .az button:disabled{color:#c3cad4;cursor:default;background:none}
+
+  /* ---------- Cards ---------- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;position:relative}
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .photo{aspect-ratio:4/3.4;position:relative;overflow:hidden;display:grid;place-items:end center}
+  .photo .sil{width:62%;opacity:.9}
+  .photo .tag{position:absolute;left:12px;top:12px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;background:rgba(255,255,255,.9);color:var(--navy);border-radius:999px;padding:3px 9px}
+  .photo .media{position:absolute;right:12px;top:12px;background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px}
+  .photo .initials{position:absolute;right:14px;bottom:10px;font-family:var(--serif);font-size:44px;color:rgba(255,255,255,.22);font-weight:700}
+  .card .body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .card .dept{font-size:12px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .card h3{font-family:var(--serif);font-weight:500;font-size:21px;margin:0;line-height:1.2}
+  .card .role{font-size:13.5px;color:var(--muted);margin:0}
+  .card .kw{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 12px}
+  .card .kw span{font-size:12px;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:2px 8px}
+  .card .cta{margin-top:auto;display:flex;align-items:center;justify-content:space-between;text-decoration:none;font-weight:600;font-size:14px;color:var(--navy);border-top:1px solid var(--line);padding-top:12px}
+  .card .cta .arr{width:32px;height:32px;border-radius:50%;background:var(--navy);color:var(--gold);display:grid;place-items:center;transition:.2s}
+  .card:hover .cta .arr{background:var(--gold);color:var(--navy);transform:translateX(3px)}
+  .card a.stretch::after{content:"";position:absolute;inset:0}
+
+  /* list view */
+  .grid.list{grid-template-columns:1fr}
+  .grid.list .card{flex-direction:row}
+  .grid.list .photo{aspect-ratio:auto;width:150px;flex:none}
+  .grid.list .card .body{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 24px}
+  .grid.list .card .info{flex:1;min-width:220px}
+  .grid.list .card .kw{margin:0;flex:1;min-width:200px}
+  .grid.list .card .cta{border:0;padding:0;margin:0;gap:10px}
+  .grid.list .photo .initials{font-size:30px}
+  @media (max-width:600px){.grid.list .photo{width:96px}}
+
+  .empty{text-align:center;padding:60px 20px;background:#fff;border:1px dashed var(--line);border-radius:var(--radius)}
+  .empty h3{font-family:var(--serif);font-weight:500;font-size:26px;margin:10px 0 6px}
+  .empty p{color:var(--muted);margin:0 0 16px}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:11px 20px;font-weight:600;font-size:14px;cursor:pointer;text-decoration:none}
+  .btn.primary{background:var(--gold);color:var(--navy)}
+  .btn.primary:hover{background:#ffbc1f}
+  .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .btn.dark{background:var(--navy);color:#fff}
+
+  /* ---------- Profile page ---------- */
+  #profile{display:none}
+  body.on-profile #directory{display:none}
+  body.on-profile #profile{display:block}
+  .p-hero{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding:28px 0 0}
+  .p-hero::before{content:"";position:absolute;left:-200px;bottom:-300px;width:600px;height:600px;border-radius:50%;border:60px solid rgba(242,169,0,.08)}
+  .crumbs{font-size:13px;color:#9fb0c6;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .crumbs a{color:#d6deea;text-decoration:none}.crumbs a:hover{color:var(--gold)}
+  .p-top{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:end;margin-top:26px;position:relative}
+  @media (max-width:760px){.p-top{grid-template-columns:1fr;gap:20px}}
+  .p-photo{border-radius:18px 18px 0 0;overflow:hidden;aspect-ratio:4/4.6;display:grid;place-items:end center;position:relative;border:4px solid rgba(255,255,255,.08);border-bottom:0}
+  .p-photo .sil{width:70%}
+  .p-photo .ph{position:absolute;top:12px;left:12px;font-size:11px;background:rgba(255,255,255,.9);color:var(--navy);border-radius:999px;padding:3px 10px;font-weight:700}
+  .p-meta{padding-bottom:34px}
+  .p-meta .dept{color:var(--gold);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+  .p-meta h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5vw,56px);margin:8px 0 6px;line-height:1.05}
+  .p-meta .role{color:#c9d4e3;font-size:17px;margin:0 0 18px}
+  .p-meta .actions{display:flex;gap:10px;flex-wrap:wrap}
+  .p-meta .badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .p-meta .badges span{font-size:12.5px;border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:4px 12px;color:#e6ecf4}
+  .p-meta .badges span.gold{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:700}
+  .p-body{display:grid;grid-template-columns:220px 1fr 300px;gap:32px;padding:40px 0 80px}
+  @media (max-width:1100px){.p-body{grid-template-columns:1fr 300px}.p-nav{display:none}}
+  @media (max-width:800px){.p-body{grid-template-columns:1fr}}
+  .p-nav{position:sticky;top:90px;align-self:start;display:flex;flex-direction:column;gap:2px}
+  .p-nav a{text-decoration:none;font-size:14px;padding:8px 14px;border-left:2px solid var(--line);color:var(--muted)}
+  .p-nav a:hover{color:var(--navy);border-color:var(--gold)}
+  .p-sec{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;margin-bottom:18px;box-shadow:var(--shadow);scroll-margin-top:90px}
+  .p-sec h2{font-family:var(--serif);font-weight:500;font-size:24px;margin:0 0 14px;display:flex;align-items:center;gap:10px}
+  .p-sec h2::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--gold)}
+  .p-sec p{margin:0 0 12px;color:#334155}
+  .placeholder{background:repeating-linear-gradient(-45deg,#fafbfc,#fafbfc 10px,#f2f4f7 10px,#f2f4f7 20px);border:1px dashed #cdd5df;border-radius:10px;padding:14px 16px;color:var(--muted);font-size:14px}
+  .areas{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .areas div{border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;gap:10px;align-items:center;font-weight:600;font-size:14px}
+  .areas div i{font-style:normal;width:32px;height:32px;border-radius:9px;background:var(--gold-soft);display:grid;place-items:center}
+  .kwcloud{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .kwcloud a{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;text-decoration:none;background:var(--bg)}
+  .kwcloud a:hover{border-color:var(--gold);background:var(--gold-soft)}
+  table.courses{width:100%;border-collapse:collapse;font-size:14px}
+  table.courses td{padding:12px 8px;border-top:1px solid var(--line)}
+  table.courses td:first-child{font-weight:700;color:var(--navy-3);white-space:nowrap;width:110px}
+  table.courses tr:first-child td{border-top:0}
+  .pubs{list-style:none;padding:0;margin:0;counter-reset:p}
+  .pubs li{padding:14px 0 14px 44px;border-top:1px solid var(--line);position:relative;font-size:14px}
+  .pubs li:first-child{border-top:0}
+  .pubs li::before{counter-increment:p;content:counter(p,decimal-leading-zero);position:absolute;left:0;top:14px;font-family:var(--serif);color:var(--gold);font-size:20px}
+  .pubs li b{display:block;font-size:15px}
+  .pubs li span{color:var(--muted)}
+  .side .p-sec{padding:22px}
+  .contact div{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  .contact div:first-child{border-top:0}
+  .contact small{display:block;color:var(--muted);font-size:12px}
+  .contact i{font-style:normal;width:34px;height:34px;flex:none;border-radius:10px;background:var(--bg);display:grid;place-items:center}
+  .mediabox{background:var(--navy)!important;color:#fff;border:0!important}
+  .mediabox h2{color:#fff}.mediabox p{color:#c9d4e3!important;font-size:14px}
+  .related a{display:flex;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line);text-decoration:none}
+  .related a:first-of-type{border-top:0}
+  .related .mini{width:46px;height:46px;border-radius:12px;overflow:hidden;flex:none;display:grid;place-items:end center}
+  .related .mini .sil{width:80%}
+  .related b{display:block;font-size:14px}.related small{color:var(--muted);font-size:12.5px}
+  .related a:hover b{color:var(--navy-3);text-decoration:underline}
+
+  footer{background:var(--navy);color:#9fb0c6;font-size:13px;padding:30px 0}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+  .fadein{animation:fade .35s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+  @media (max-width:560px){.wrap{padding:0 16px}.hero{padding:44px 0 110px}.searchbox input{height:56px;font-size:15px;padding-right:20px}.searchbox .kbd{display:none}.stats{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid:not(.list) .photo{aspect-ratio:16/10}.grid:not(.list) .photo .sil{width:40%}}
+</style>
+</head>
+<body>
+
+<div class="mockbar">Design mockup · all names, photos and details are placeholder sample data</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#/">
+      <span class="mark">X</span>
+      <span><b>StFX Research</b><small>St. Francis Xavier University</small></span>
+    </a>
+    <nav>
+      <a href="index.html" class="on">All options</a>
+      <a href="#/">Research Centres</a>
+      <a href="#/">Funding</a>
+      <a href="#/">Media Relations</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ======================= DIRECTORY ======================= -->
+<main id="directory">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Research Expertise Directory</span>
+      <h1>Find the mind behind the <em>question.</em></h1>
+      <p class="lead">Search StFX faculty by name, topic, department or course. Connect with researchers for media commentary, collaboration, and community partnerships.</p>
+      <div class="searchbox" id="searchbox">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label for="q" class="sr">Search experts</label>
+        <input id="q" type="search" autocomplete="off" placeholder="Search a name, keyword, department or course code…">
+        <span class="kbd">Press <span>/</span> to search</span>
+        <button class="clear" id="qclear" type="button">Clear</button>
+      </div>
+      <div class="suggest">Popular:
+        <button data-q="coastal">coastal</button>
+        <button data-q="machine learning">machine learning</button>
+        <button data-q="mental health">mental health</button>
+        <button data-q="Gaelic">Gaelic</button>
+        <button data-q="CSCI">CSCI courses</button>
+      </div>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <section class="themes">
+    <div class="wrap"><div class="themes-grid" id="themes"></div></div>
+  </section>
+
+  <section class="wrap directory" id="results-top">
+    <aside class="filters" id="filters" aria-label="Filters">
+      <div class="f-head"><h2>Refine results</h2><button class="linkbtn" id="resetAll" type="button">Reset all</button></div>
+
+      <div class="fgroup"><h3>Faculty</h3><div id="f-faculty"></div></div>
+
+      <div class="fgroup"><h3>Department</h3>
+        <label for="f-dept" class="sr">Department</label>
+        <select id="f-dept" class="sel"></select>
+      </div>
+
+      <div class="fgroup"><h3>Course taught</h3>
+        <label for="f-course" class="sr">Course</label>
+        <select id="f-course" class="sel"></select>
+      </div>
+
+      <div class="fgroup"><h3>Research area</h3><div class="chips" id="f-area"></div></div>
+
+      <div class="fgroup"><h3>Academic rank</h3><div id="f-rank"></div></div>
+
+      <div class="fgroup"><h3>Availability</h3>
+        <label class="toggle">Available for media <input type="checkbox" id="f-media"></label>
+        <label class="toggle">Speaks French <input type="checkbox" id="f-fr"></label>
+      </div>
+    </aside>
+
+    <div>
+      <div class="toolbar">
+        <button class="mfilter" id="mfilter" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M7 12h10M10 18h4"/></svg> Filters
+        </button>
+        <div class="count" id="count"></div>
+        <div class="right">
+          <label class="sortwrap" for="sort">Sort by
+            <select id="sort">
+              <option value="relevance">Best match</option>
+              <option value="last-asc">Last name (A–Z)</option>
+              <option value="last-desc">Last name (Z–A)</option>
+              <option value="dept">Department</option>
+              <option value="newest">Newest faculty</option>
+              <option value="pubs">Most publications</option>
+            </select>
+          </label>
+          <div class="viewtog" role="group" aria-label="View">
+            <button type="button" data-view="grid" class="on" title="Grid view"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg></button>
+            <button type="button" data-view="list" title="List view"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="4" width="18" height="4" rx="1.5"/><rect x="3" y="10" width="18" height="4" rx="1.5"/><rect x="3" y="16" width="18" height="4" rx="1.5"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="active" id="active"></div>
+      <div class="az" id="az" aria-label="Jump by last name"></div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+</main>
+
+<!-- ======================= PROFILE ======================= -->
+<main id="profile"></main>
+
+<footer>
+  <div class="wrap">
+    <span>© StFX Research · Expertise Directory (mockup)</span>
+    <span>Media inquiries: media@example.ca · Placeholder content</span>
+  </div>
+</footer>
+
+<script>
+/* ===================== SAMPLE DATA (replace with real content) ===================== */
+const AREAS = [
+  {id:'climate', name:'Climate & Environment', ic:'🌿'},
+  {id:'ocean',   name:'Coastal & Ocean Science', ic:'🌊'},
+  {id:'health',  name:'Health & Wellbeing', ic:'🩺'},
+  {id:'data',    name:'Data, AI & Computing', ic:'💡'},
+  {id:'community', name:'Indigenous & Community Studies', ic:'🤝'},
+  {id:'economy', name:'Business & Economy', ic:'📈'},
+  {id:'culture', name:'Culture, Language & Heritage', ic:'📜'},
+  {id:'education', name:'Education & Learning', ic:'🎓'},
+];
+const DEPTS = {
+  'Biology':['BIOL','Science'], 'Chemistry':['CHEM','Science'], 'Computer Science':['CSCI','Science'],
+  'Earth Sciences':['ESCI','Science'], 'Mathematics & Statistics':['MATH','Science'], 'Physics':['PHYS','Science'],
+  'Human Nutrition':['HNU','Science'], 'Nursing':['NURS','Science'],
+  'History':['HIST','Arts'], 'English':['ENGL','Arts'], 'Political Science':['PSCI','Arts'], 'Psychology':['PSYC','Arts'],
+  'Anthropology':['ANTH','Arts'], 'Celtic Studies':['CELT','Arts'],
+  'Business Administration':['BSAD','Business'], 'Economics':['ECON','Business'],
+  'Education':['EDUC','Education'],
+};
+const COURSE_TITLES = {
+  BIOL:['Ecology','Marine Biology','Genetics','Field Methods'], CHEM:['Organic Chemistry','Environmental Chemistry','Analytical Methods'],
+  CSCI:['Intro to Programming','Machine Learning','Data Structures','Human–Computer Interaction'],
+  ESCI:['Coastal Geomorphology','Climate Systems','Geology of Atlantic Canada'], MATH:['Statistics I','Applied Modelling','Linear Algebra'],
+  PHYS:['Quantum Mechanics','Climate Physics','Mechanics'], HNU:['Community Nutrition','Food Systems'], NURS:['Rural Health Practice','Mental Health Nursing'],
+  HIST:['Atlantic Canada History','The Modern World','Oral History'], ENGL:['Canadian Literature','Creative Writing','Digital Storytelling'],
+  PSCI:['Canadian Politics','Public Policy','Global Governance'], PSYC:['Health Psychology','Developmental Psychology','Research Methods'],
+  ANTH:['Indigenous Peoples of Canada','Ethnographic Methods'], CELT:['Scottish Gaelic I','Celtic Folklore'],
+  BSAD:['Entrepreneurship','Marketing Analytics','Organizational Behaviour'], ECON:['Microeconomics','Fisheries Economics','Development Economics'],
+  EDUC:['Inclusive Classrooms','Curriculum Design','Educational Technology'],
+};
+// [first, last, rank, dept, areas[], keywords[], joinedYear, pubs, media, french]
+const RAW = [
+ ['Amara','Okafor','Professor','Biology',['ocean','climate'],['marine ecology','kelp forests','coastal ecosystems','biodiversity'],2009,64,1,0],
+ ['Liam','MacNeil','Associate Professor','Earth Sciences',['ocean','climate'],['coastal erosion','sea-level rise','geomorphology'],2014,38,1,0],
+ ['Sophie','Chiasson','Assistant Professor','Psychology',['health','education'],['mental health','adolescence','resilience'],2021,17,1,1],
+ ['Daniel','Whitecap','Associate Professor','Anthropology',['community','culture'],['Indigenous knowledge','land-based learning','oral tradition'],2016,29,1,0],
+ ['Priya','Raman','Professor','Computer Science',['data'],['machine learning','computer vision','ethical AI'],2010,82,1,0],
+ ['Ewan','MacKinnon','Professor','Celtic Studies',['culture'],['Scottish Gaelic','folklore','language revitalization'],2004,45,0,0],
+ ['Hannah','Boudreau','Assistant Professor','Nursing',['health','community'],['rural health','palliative care','health equity'],2022,11,1,1],
+ ['Marcus','Whitford','Associate Professor','Economics',['economy','ocean'],['fisheries economics','resource management','labour markets'],2015,33,1,0],
+ ['Leah','Doucette','Professor','Education',['education','community'],['inclusive education','teacher development','literacy'],2008,51,0,1],
+ ['Tomás','Alvarez','Assistant Professor','Physics',['climate','data'],['atmospheric physics','climate modelling','remote sensing'],2020,19,0,0],
+ ['Noah','Fraser','Associate Professor','History',['culture','community'],['Atlantic Canada','oral history','migration'],2013,27,1,0],
+ ['Isla','Campbell','Professor','English',['culture','education'],['Canadian literature','poetry','digital humanities'],2006,40,0,0],
+ ['Ravi','Menon','Associate Professor','Business Administration',['economy','data'],['entrepreneurship','innovation','marketing analytics'],2017,24,1,0],
+ ['Claire','Gillis','Assistant Professor','Human Nutrition',['health','community'],['food security','community nutrition','public health'],2021,14,1,1],
+ ['Owen','Chisholm','Professor','Chemistry',['climate'],['green chemistry','catalysis','environmental toxins'],2007,71,0,0],
+ ['Mei','Lin','Assistant Professor','Mathematics & Statistics',['data','health'],['biostatistics','epidemiological modelling','Bayesian methods'],2023,9,0,0],
+ ['Fatima','Haddad','Associate Professor','Political Science',['community','economy'],['public policy','immigration','rural governance'],2016,22,1,1],
+ ['Jacob','Landry','Assistant Professor','Biology',['ocean','climate'],['aquaculture','fish genetics','ocean warming'],2022,13,0,1],
+ ['Aisling','Murphy','Professor','Psychology',['health'],['neuroscience','sleep','cognitive ageing'],2005,58,1,0],
+ ['Kwame','Mensah','Associate Professor','Computer Science',['data','education'],['human–computer interaction','accessibility','educational technology'],2018,21,0,0],
+ ['Nadia','Petrova','Assistant Professor','Earth Sciences',['climate'],['glaciology','paleoclimate','geochemistry'],2024,6,0,0],
+ ['Sean','MacDonald','Professor','Business Administration',['economy','community'],['co-operatives','social enterprise','community development'],2003,49,1,0],
+ ['Elena','Rossi','Associate Professor','Education',['education','data'],['STEM education','assessment','online learning'],2019,18,0,1],
+ ['Grace','Pictou','Assistant Professor','Nursing',['health','community'],['Indigenous health','maternal health','community care'],2023,7,1,0],
+];
+const TONES = [['#0C2340','#1d4373'],['#13315a','#2a5a8f'],['#1b2b40','#3b5574'],['#0e2a4a','#c08700']];
+const EXPERTS = RAW.map((r,i)=>{
+  const [first,last,rank,dept,areas,keywords,joined,pubs,media,fr] = r;
+  const [code,faculty] = DEPTS[dept];
+  const titles = COURSE_TITLES[code];
+  const courses = [0,1].map(k=>({code:`${code} ${(k+1)*100 + 10 + (i*7+k*13)%80}`, title:titles[(i+k)%titles.length]}));
+  return { id:`${first}-${last}`.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z-]/g,''),
+    first,last,name:`Dr. ${first} ${last}`,rank,dept,code,faculty,areas,keywords,joined,pubs,media:!!media,french:!!fr,
+    langs: fr?['English','French']:['English'], courses, tone:TONES[i%TONES.length],
+    email:`${first[0]}${last}`.toLowerCase().normalize('NFD').replace(/[^a-z]/g,'')+'@example.ca' };
+});
+const RANKS = ['Professor','Associate Professor','Assistant Professor'];
+const FACULTIES = ['Arts','Science','Business','Education'];
+const areaById = Object.fromEntries(AREAS.map(a=>[a.id,a]));
+
+/* ===================== HELPERS ===================== */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const silhouette = `<svg class="sil" viewBox="0 0 100 90" aria-hidden="true"><circle cx="50" cy="32" r="20" fill="rgba(255,255,255,.85)"/><path d="M8 90c2-24 20-36 42-36s40 12 42 36z" fill="rgba(255,255,255,.85)"/></svg>`;
+const photoBg = e=>`background:radial-gradient(circle at 30% 20%, ${e.tone[1]}, ${e.tone[0]} 70%)`;
+const hay = e=>norm([e.name,e.rank,e.dept,e.faculty,e.areas.map(a=>areaById[a].name).join(' '),e.keywords.join(' '),
+  e.courses.map(c=>c.code+' '+c.code.replace(' ','')+' '+c.title).join(' '),e.langs.join(' ')].join(' '));
+EXPERTS.forEach(e=>e._hay=hay(e));
+
+function hl(text){
+  const toks = tokens();
+  let out = esc(text);
+  if(!toks.length) return out;
+  const re = new RegExp('('+toks.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','gi');
+  return out.replace(re,'<mark>$1</mark>');
+}
+
+/* ===================== STATE ===================== */
+const S = {q:'',faculty:new Set(),dept:'',course:'',areas:new Set(),rank:new Set(),media:false,fr:false,letter:'',sort:'relevance',view:'grid'};
+try{ S.view = localStorage.getItem('expert-view') || 'grid'; }catch(e){}
+const tokens = ()=>norm(S.q).split(/\s+/).filter(Boolean);
+
+function score(e){
+  const toks = tokens(); if(!toks.length) return 0;
+  let s = 0;
+  for(const t of toks){
+    if(norm(e.name).includes(t)) s+=10;
+    if(e.keywords.some(k=>norm(k).includes(t))) s+=6;
+    if(norm(e.dept).includes(t)) s+=4;
+    if(e.courses.some(c=>norm(c.code+c.title).includes(t))) s+=3;
+    s+=1;
+  }
+  return s;
+}
+function matches(e, skip){
+  const toks = tokens();
+  if(toks.length && !toks.every(t=>e._hay.includes(t))) return false;
+  if(skip!=='faculty' && S.faculty.size && !S.faculty.has(e.faculty)) return false;
+  if(skip!=='dept' && S.dept && e.dept!==S.dept) return false;
+  if(skip!=='course' && S.course && !e.courses.some(c=>c.code===S.course)) return false;
+  if(skip!=='areas' && S.areas.size && ![...S.areas].every(a=>e.areas.includes(a))) return false;
+  if(skip!=='rank' && S.rank.size && !S.rank.has(e.rank)) return false;
+  if(S.media && !e.media) return false;
+  if(S.fr && !e.french) return false;
+  if(skip!=='letter' && S.letter && e.last[0].toUpperCase()!==S.letter) return false;
+  return true;
+}
+function sorted(list){
+  const by = {
+    'relevance': (a,b)=> (score(b)-score(a)) || a.last.localeCompare(b.last),
+    'last-asc': (a,b)=>a.last.localeCompare(b.last),
+    'last-desc': (a,b)=>b.last.localeCompare(a.last),
+    'dept': (a,b)=>a.dept.localeCompare(b.dept)||a.last.localeCompare(b.last),
+    'newest': (a,b)=>b.joined-a.joined,
+    'pubs': (a,b)=>b.pubs-a.pubs,
+  }[S.sort];
+  return [...list].sort(by);
+}
+
+/* ===================== RENDER: directory ===================== */
+function renderStats(){
+  $('#stats').innerHTML = `
+    <div><b>${EXPERTS.length}</b><span>Faculty experts</span></div>
+    <div><b>${Object.keys(DEPTS).length}</b><span>Departments</span></div>
+    <div><b>${AREAS.length}</b><span>Research themes</span></div>
+    <div><b>${EXPERTS.filter(e=>e.media).length}</b><span>Media-ready</span></div>`;
+}
+function renderThemes(){
+  $('#themes').innerHTML = AREAS.map(a=>{
+    const n = EXPERTS.filter(e=>e.areas.includes(a.id)).length;
+    return `<button class="theme ${S.areas.has(a.id)?'on':''}" data-area="${a.id}" type="button">
+      <span class="ic">${a.ic}</span><b>${a.name}</b><small>${n} experts</small></button>`;
+  }).join('');
+}
+function renderFilters(){
+  const cnt = (skip,fn)=>EXPERTS.filter(e=>matches(e,skip)&&fn(e)).length;
+  $('#f-faculty').innerHTML = FACULTIES.map(f=>{const n=cnt('faculty',e=>e.faculty===f);
+    return `<label class="check ${n?'':'zero'}"><input type="checkbox" data-fac="${f}" ${S.faculty.has(f)?'checked':''}> Faculty of ${f}<span class="n">${n}</span></label>`}).join('');
+  $('#f-rank').innerHTML = RANKS.map(r=>{const n=cnt('rank',e=>e.rank===r);
+    return `<label class="check ${n?'':'zero'}"><input type="checkbox" data-rank="${r}" ${S.rank.has(r)?'checked':''}> ${r}<span class="n">${n}</span></label>`}).join('');
+  const depts = Object.keys(DEPTS).filter(d=>!S.faculty.size||S.faculty.has(DEPTS[d][1])).sort();
+  $('#f-dept').innerHTML = `<option value="">All departments</option>`+depts.map(d=>`<option ${S.dept===d?'selected':''}>${d}</option>`).join('');
+  const courses = {}; EXPERTS.forEach(e=>e.courses.forEach(c=>{(courses[e.dept]??={})[c.code]=c.title}));
+  $('#f-course').innerHTML = `<option value="">Any course</option>`+Object.keys(courses).sort().filter(d=>!S.dept||d===S.dept)
+    .map(d=>`<optgroup label="${d}">`+Object.entries(courses[d]).sort().map(([c,t])=>`<option value="${c}" ${S.course===c?'selected':''}>${c} — ${t}</option>`).join('')+`</optgroup>`).join('');
+  $('#f-area').innerHTML = AREAS.map(a=>`<button type="button" class="chip ${S.areas.has(a.id)?'on':''}" data-area="${a.id}">${a.name}</button>`).join('');
+  $('#f-media').checked = S.media; $('#f-fr').checked = S.fr;
+}
+function renderActive(){
+  const p = [];
+  if(S.q) p.push(['q',`“${S.q}”`]);
+  S.faculty.forEach(f=>p.push(['faculty:'+f,'Faculty of '+f]));
+  if(S.dept) p.push(['dept',S.dept]);
+  if(S.course) p.push(['course',S.course]);
+  S.areas.forEach(a=>p.push(['area:'+a,areaById[a].name]));
+  S.rank.forEach(r=>p.push(['rank:'+r,r]));
+  if(S.media) p.push(['media','Media-ready']);
+  if(S.fr) p.push(['fr','Speaks French']);
+  if(S.letter) p.push(['letter','Last name: '+S.letter]);
+  $('#active').innerHTML = p.map(([k,l])=>`<span class="pill">${esc(l)}<button type="button" data-rm="${esc(k)}" aria-label="Remove ${esc(l)}">×</button></span>`).join('')
+    + (p.length>1?`<button class="linkbtn" type="button" id="clearPills">Clear all</button>`:'');
+}
+function renderAZ(){
+  const have = new Set(EXPERTS.filter(e=>matches(e,'letter')).map(e=>e.last[0].toUpperCase()));
+  $('#az').innerHTML = `<button type="button" data-letter="" class="${S.letter?'':'on'}" style="width:auto;padding:0 10px">All</button>` +
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map(l=>`<button type="button" data-letter="${l}" class="${S.letter===l?'on':''}" ${have.has(l)?'':'disabled'}>${l}</button>`).join('');
+}
+function card(e){
+  const kws = e.keywords.slice(0,3).map(k=>`<span>${hl(k)}</span>`).join('');
+  return `<article class="card fadein">
+    <div class="photo" style="${photoBg(e)}">
+      <span class="tag">Photo</span>${e.media?'<span class="media">🎙 Media-ready</span>':''}
+      ${silhouette}<span class="initials">${e.first[0]}${e.last[0]}</span>
+    </div>
+    <div class="body">
+      <div class="info">
+        <div class="dept">${hl(e.dept)}</div>
+        <h3>${hl(e.name)}</h3>
+        <p class="role">${esc(e.rank)} · Faculty of ${esc(e.faculty)}</p>
+      </div>
+      <div class="kw">${kws}</div>
+      <a class="cta stretch" href="#/expert/${e.id}">View profile <span class="arr">→</span></a>
+    </div></article>`;
+}
+function renderGrid(){
+  const list = sorted(EXPERTS.filter(e=>matches(e)));
+  $('#count').innerHTML = `<b>${list.length}</b> ${list.length===1?'expert':'experts'} ${S.q?`for “${esc(S.q)}”`:'found'}`;
+  const g = $('#grid'); g.className = 'grid' + (S.view==='list'?' list':'');
+  g.innerHTML = list.length ? list.map(card).join('') :
+    `<div class="empty" style="grid-column:1/-1"><div style="font-size:40px">🔍</div><h3>No experts match that search</h3>
+     <p>Try a broader keyword, or remove a filter.</p><button class="btn dark" type="button" id="emptyReset">Reset search & filters</button></div>`;
+  document.querySelectorAll('.viewtog button').forEach(b=>b.classList.toggle('on',b.dataset.view===S.view));
+}
+function render(){
+  $('#searchbox').classList.toggle('has',!!S.q);
+  renderThemes(); renderFilters(); renderActive(); renderAZ(); renderGrid();
+}
+function reset(){
+  Object.assign(S,{q:'',dept:'',course:'',media:false,fr:false,letter:''});
+  S.faculty.clear(); S.areas.clear(); S.rank.clear(); $('#q').value=''; render();
+}
+
+/* ===================== EVENTS: directory ===================== */
+let t;
+$('#q').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{S.q=e.target.value.trim(); if(S.q&&S.sort!=='relevance'&&!S._userSort) S.sort='relevance'; $('#sort').value=S.sort; render();},120)});
+$('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){document.getElementById('results-top').scrollIntoView({behavior:'smooth'})}});
+$('#qclear').onclick=()=>{S.q='';$('#q').value='';render();$('#q').focus()};
+document.querySelectorAll('.suggest button').forEach(b=>b.onclick=()=>{S.q=b.dataset.q;$('#q').value=S.q;render();document.getElementById('results-top').scrollIntoView({behavior:'smooth'})});
+document.addEventListener('keydown',e=>{if(e.key==='/'&&document.activeElement.tagName!=='INPUT'&&!document.body.classList.contains('on-profile')){e.preventDefault();$('#q').focus()}});
+$('#sort').onchange=e=>{S.sort=e.target.value;S._userSort=true;renderGrid()};
+document.querySelectorAll('.viewtog button').forEach(b=>b.onclick=()=>{S.view=b.dataset.view;try{localStorage.setItem('expert-view',S.view)}catch(e){};renderGrid()});
+$('#mfilter').onclick=()=>$('#filters').classList.toggle('open');
+$('#resetAll').onclick=reset;
+$('#f-dept').onchange=e=>{S.dept=e.target.value;S.course='';render()};
+$('#f-course').onchange=e=>{S.course=e.target.value;render()};
+$('#f-media').onchange=e=>{S.media=e.target.checked;render()};
+$('#f-fr').onchange=e=>{S.fr=e.target.checked;render()};
+document.addEventListener('change',e=>{
+  const d=e.target.dataset; if(d.fac){toggle(S.faculty,d.fac);if(S.dept&&!S.faculty.has(DEPTS[S.dept][1])&&S.faculty.size){S.dept='';S.course=''}render()}
+  if(d.rank){toggle(S.rank,d.rank);render()}
+});
+document.addEventListener('click',e=>{
+  const a=e.target.closest('[data-area]'); if(a){toggle(S.areas,a.dataset.area);render(); if(a.classList.contains('theme')) document.getElementById('results-top').scrollIntoView({behavior:'smooth'});}
+  const l=e.target.closest('[data-letter]'); if(l){S.letter=l.dataset.letter;render()}
+  const r=e.target.closest('[data-rm]'); if(r){const [k,v]=r.dataset.rm.split(/:(.+)/);
+    ({q:()=>{S.q='';$('#q').value=''},faculty:()=>S.faculty.delete(v),dept:()=>{S.dept='';S.course=''},course:()=>S.course='',area:()=>S.areas.delete(v),
+      rank:()=>S.rank.delete(v),media:()=>S.media=false,fr:()=>S.fr=false,letter:()=>S.letter=''})[k](); render()}
+  if(e.target.id==='clearPills'||e.target.id==='emptyReset') reset();
+});
+const toggle=(set,v)=>set.has(v)?set.delete(v):set.add(v);
+
+/* ===================== RENDER: profile ===================== */
+function renderProfile(id){
+  const e = EXPERTS.find(x=>x.id===id);
+  if(!e){location.hash='#/';return}
+  const related = EXPERTS.filter(x=>x!==e).map(x=>[x,x.areas.filter(a=>e.areas.includes(a)).length+(x.dept===e.dept?1:0)])
+    .filter(([,s])=>s>0).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([x])=>x);
+  const pubs = Array.from({length:4},(_,i)=>`<li><b>Publication title placeholder — ${esc(e.keywords[i%e.keywords.length])}</b>
+    <span>${e.last}, ${e.first[0]}., et al. · <i>Journal Name</i> · ${2025-i}</span></li>`).join('');
+  $('#profile').innerHTML = `
+  <section class="p-hero"><div class="wrap">
+    <div class="crumbs"><a href="#/">← Find an Expert</a><span>/</span><span>Faculty of ${esc(e.faculty)}</span><span>/</span><span>${esc(e.dept)}</span></div>
+    <div class="p-top">
+      <div class="p-photo" style="${photoBg(e)}"><span class="ph">Headshot placeholder</span>${silhouette}</div>
+      <div class="p-meta">
+        <div class="dept">${esc(e.dept)}</div>
+        <h1>${esc(e.name)}</h1>
+        <p class="role">${esc(e.rank)}, Faculty of ${esc(e.faculty)}</p>
+        <div class="badges">${e.media?'<span class="gold">🎙 Available for media</span>':''}${e.langs.map(l=>`<span>${l}</span>`).join('')}<span>At StFX since ${e.joined}</span></div>
+        <div class="actions">
+          <a class="btn primary" href="mailto:${e.email}">✉ Contact ${esc(e.first)}</a>
+          <a class="btn ghost" href="#" onclick="return false">Download CV</a>
+          <a class="btn ghost" href="#" onclick="return false">Google Scholar ↗</a>
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <div class="wrap p-body fadein">
+    <nav class="p-nav" aria-label="On this page">
+      <a href="#" data-jump="about">About</a><a href="#" data-jump="research">Research</a><a href="#" data-jump="teaching">Teaching</a>
+      <a href="#" data-jump="pubs">Publications</a><a href="#" data-jump="contact">Contact</a>
+    </nav>
+    <div>
+      <section class="p-sec" id="about"><h2>About</h2>
+        <p>${esc(e.name)} is ${/^[AEIOU]/.test(e.rank)?'an':'a'} ${esc(e.rank.toLowerCase())} in the Department of ${esc(e.dept)}, whose work focuses on ${esc(e.keywords.slice(0,-1).join(', '))} and ${esc(e.keywords.at(-1))}.</p>
+        <div class="placeholder">Biography placeholder — a 2–3 paragraph profile, career highlights, and current projects will be supplied by the faculty member.</div>
+      </section>
+      <section class="p-sec" id="research"><h2>Research expertise</h2>
+        <div class="areas">${e.areas.map(a=>`<div><i>${areaById[a].ic}</i>${areaById[a].name}</div>`).join('')}</div>
+        <div class="kwcloud">${e.keywords.map(k=>`<a href="#/" data-search="${esc(k)}">${esc(k)}</a>`).join('')}</div>
+        <p style="margin-top:16px;font-size:13px;color:var(--muted)">Tip: click a keyword to find other experts working on it.</p>
+      </section>
+      <section class="p-sec" id="teaching"><h2>Courses taught</h2>
+        <table class="courses">${e.courses.map(c=>`<tr><td>${c.code}</td><td>${esc(c.title)}</td></tr>`).join('')}</table>
+      </section>
+      <section class="p-sec" id="pubs"><h2>Selected publications</h2>
+        <ul class="pubs">${pubs}</ul>
+        <p style="font-size:13px;color:var(--muted);margin:8px 0 0">${e.pubs} total publications · placeholder figures</p>
+      </section>
+    </div>
+    <div class="side">
+      <section class="p-sec contact" id="contact"><h2>Contact</h2>
+        <div><i>✉</i><span><small>Email</small>${e.email}</span></div>
+        <div><i>☎</i><span><small>Phone</small>902-000-0000</span></div>
+        <div><i>📍</i><span><small>Office</small>Building placeholder, Room 000</span></div>
+      </section>
+      ${e.media?`<section class="p-sec mediabox"><h2>Media requests</h2><p>${esc(e.first)} is available to comment on ${esc(e.keywords[0])} and related topics. Contact the media relations office to arrange an interview.</p><a class="btn primary" href="#" onclick="return false">Request an interview</a></section>`:''}
+      <section class="p-sec related"><h2>Related experts</h2>
+        ${related.map(x=>`<a href="#/expert/${x.id}"><span class="mini" style="${photoBg(x)}">${silhouette}</span><span><b>${esc(x.name)}</b><small>${esc(x.dept)}</small></span></a>`).join('')}
+      </section>
+    </div>
+  </div>`;
+}
+
+/* ===================== ROUTER ===================== */
+let lastScroll = 0;
+function route(){
+  const m = location.hash.match(/^#\/expert\/([a-z-]+)/);
+  if(m){
+    if(!document.body.classList.contains('on-profile')) lastScroll = scrollY;
+    document.body.classList.add('on-profile'); renderProfile(m[1]); scrollTo(0,0);
+    document.title = (EXPERTS.find(x=>x.id===m[1])?.name||'Expert')+' · StFX Research';
+  } else {
+    const wasProfile = document.body.classList.contains('on-profile');
+    document.body.classList.remove('on-profile'); document.title='Find an Expert · StFX Research';
+    if(wasProfile) requestAnimationFrame(()=>scrollTo(0,lastScroll));
+  }
+}
+document.addEventListener('click',e=>{
+  const j=e.target.closest('[data-jump]'); if(j){e.preventDefault();document.getElementById(j.dataset.jump).scrollIntoView({behavior:'smooth'})}
+  const s=e.target.closest('[data-search]'); if(s){e.preventDefault();reset();S.q=s.dataset.search;$('#q').value=S.q;render();location.hash='#/';
+    setTimeout(()=>document.getElementById('results-top').scrollIntoView({behavior:'smooth'}),30)}
+});
+window.addEventListener('hashchange',route);
+
+renderStats(); render(); route();
+</script>
+</body>
+</html>

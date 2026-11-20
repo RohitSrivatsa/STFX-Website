@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expert Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .top{background:var(--navy);color:#fff;padding:22px 0 0;border-bottom:4px solid var(--gold)}
+  .back{color:#c9d4e3;text-decoration:none;font-size:14px}.back:hover{color:var(--gold)}
+  .hd{display:flex;gap:28px;align-items:flex-end;margin-top:18px;flex-wrap:wrap}
+  .hd .photo{width:190px;height:220px;border-radius:12px 12px 0 0;flex:none}
+  .hd .t{padding-bottom:24px;flex:1;min-width:240px}
+  .hd .d{color:var(--gold);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .hd h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.5vw,46px);margin:6px 0 4px;line-height:1.1}
+  .hd p{margin:0 0 16px;color:#c9d4e3}
+  .hd .acts{display:flex;gap:8px;flex-wrap:wrap}
+  .hd .btn.line{background:transparent;color:#fff;border-color:rgba(255,255,255,.35)}
+  .grid{display:grid;grid-template-columns:1fr 300px;gap:24px;padding:30px 0}
+  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+  .box{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px}
+  .box h2{font-family:var(--serif);font-weight:500;font-size:21px;margin:0 0 12px}
+  .ph{background:repeating-linear-gradient(-45deg,#fafbfc,#fafbfc 10px,#f2f4f7 10px,#f2f4f7 20px);border:1px dashed #cdd5df;border-radius:10px;padding:14px;color:var(--muted);font-size:14px}
+  .tags span{display:inline-block;font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 11px;margin:0 6px 6px 0}
+  .tags span.a{background:var(--gold-soft);border-color:#f3dc9c;color:var(--gold-ink);font-weight:600}
+  .rows div{display:flex;gap:14px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  .rows div:first-child{border-top:0}
+  .rows b{color:var(--navy-2);min-width:90px}
+  .side small{display:block;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="mockbar">Shared profile page used by options B–E · sample data — <a href="index.html">see all options</a></div>
+<div id="root"></div>
+<footer><div class="wrap">Profile mockup · placeholder content</div></footer>
+<script src="shared.js"></script>
+<script>
+const p = new URLSearchParams(location.search);
+const e = EXPERTS.find(x=>x.id===p.get('id')) || EXPERTS[0];
+const from = /^option-[a-e][\w-]*\.html$/.test(p.get('from')||'') ? p.get('from') : 'index.html';
+document.title = e.name+' · StFX Research';
+document.getElementById('root').innerHTML = `
+<section class="top"><div class="wrap">
+  <a class="back" href="${from}">← Back to all experts</a>
+  <div class="hd">${photo(e)}
+    <div class="t"><div class="d">${e.dept} · Faculty of ${e.faculty}</div><h1>${e.name}</h1><p>${e.rank}${e.media?' · Available for media':''}</p>
+      <div class="acts"><a class="btn gold" href="mailto:${e.email}">Email ${e.first}</a><a class="btn line" href="#" onclick="return false">Download CV</a></div></div>
+  </div>
+</div></section>
+<main class="wrap grid">
+  <div>
+    <section class="box"><h2>About</h2><div class="ph">Biography placeholder. 2–3 paragraphs supplied by the faculty member.</div></section>
+    <section class="box"><h2>Research expertise</h2><div class="tags">${e.areas.map(a=>`<span class="a">${areaName(a)}</span>`).join('')}${e.keywords.map(k=>`<span>${k}</span>`).join('')}</div></section>
+    <section class="box rows"><h2>Courses taught</h2>${e.courses.map(c=>`<div><b>${c.code}</b>${c.title}</div>`).join('')}</section>
+    <section class="box rows"><h2>Selected publications</h2>${[0,1,2].map(i=>`<div><b>${2025-i}</b>Publication title placeholder — <i>Journal Name</i></div>`).join('')}</section>
+  </div>
+  <aside class="side">
+    <section class="box rows"><h2>Contact</h2>
+      <div><span><small>Email</small>${e.email}</span></div><div><span><small>Phone</small>902-000-0000</span></div><div><span><small>Office</small>Building, Room 000</span></div></section>
+  </aside>
+</main>`;
+</script>
+</body>
+</html>

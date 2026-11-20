@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expert Directory · Option E</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .head{padding:36px 0 18px;display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+  .head h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4vw,42px);margin:0}
+  .head p{margin:4px 0 0;color:var(--muted)}
+  .groupby{display:flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+  .groupby button{border:0;background:none;border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--muted)}
+  .groupby button.on{background:var(--navy);color:var(--gold)}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0}
+  .bar .search{flex:2 1 260px}.bar select{flex:1 1 160px}
+  .jump{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0 4px}
+  .jump a{min-width:30px;height:30px;padding:0 8px;display:grid;place-items:center;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;background:#fff;border:1px solid var(--line)}
+  .jump a:hover{background:var(--gold);border-color:var(--gold)}
+  .sec{scroll-margin-top:70px}
+  .sec h2{display:flex;align-items:center;gap:14px;font-family:var(--serif);font-weight:500;font-size:26px;margin:30px 0 14px;color:var(--navy)}
+  .sec h2 .badge{width:44px;height:44px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-size:22px;flex:none}
+  .sec h2 .badge.wide{width:auto;height:auto;border-radius:8px;padding:2px 10px;font-size:13px;font-family:var(--sans);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .sec h2::after{content:"";flex:1;height:1px;background:var(--line)}
+  .people{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:22px 16px}
+  .person{text-align:center;text-decoration:none;display:block;padding:6px}
+  .person .photo{width:120px;height:120px;border-radius:50%;margin:0 auto 10px;border:3px solid #fff;box-shadow:0 0 0 2px var(--line);transition:.2s}
+  .person:hover .photo{box-shadow:0 0 0 3px var(--gold)}
+  .person b{display:block;font-size:15px}
+  .person small{display:block;color:var(--muted);font-size:12.5px;line-height:1.35}
+  .person .v{display:inline-block;margin-top:8px;font-size:12.5px;font-weight:600;color:var(--navy-2);border-bottom:1px solid var(--gold)}
+</style>
+</head>
+<body>
+<div class="mockbar">Option E · A–Z directory with “group by” · sample data — <a href="index.html">see all options</a></div>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><span class="mark">X</span><b>StFX Research Experts</b></a></div></header>
+
+<main class="wrap">
+  <div class="head">
+    <div><h1>Faculty Experts A–Z</h1><p>Every researcher in one place. Group the list the way you like.</p></div>
+    <div class="groupby" role="group" aria-label="Group by">
+      <button data-g="letter" class="on">A–Z</button><button data-g="faculty">Faculty</button><button data-g="area">Research area</button>
+    </div>
+  </div>
+  <div class="bar">
+    <label class="search"><span class="sr">Search</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" class="field" type="search" placeholder="Search experts" style="width:100%"></label>
+    <label><span class="sr">Department</span><select id="dept" class="field"></select></label>
+    <label><span class="sr">Course</span><select id="course" class="field"></select></label>
+    <label><span class="sr">Sort</span><select id="sort" class="field">
+      <option value="az">A → Z</option><option value="za">Z → A</option></select></label>
+  </div>
+  <nav class="jump" id="jump" aria-label="Jump to section"></nav>
+  <div id="out"></div>
+</main>
+<footer><div class="wrap">Option E mockup · placeholder content</div></footer>
+
+<script src="shared.js"></script>
+<script>
+const S = {q:'',faculty:'',dept:'',course:'',area:'',sort:'az',group:'letter'};
+function render(){
+  const list = sortExperts(filterExperts(S),S.sort,S.q);
+  const groups = {};
+  list.forEach(e=>{
+    const keys = S.group==='letter' ? [e.last[0].toUpperCase()] : S.group==='faculty' ? ['Faculty of '+e.faculty] : e.areas.map(areaName);
+    keys.forEach(k=>(groups[k]??=[]).push(e));
+  });
+  let keys = Object.keys(groups).sort(); if(S.sort==='za') keys.reverse();
+  const slug = k=>'g-'+norm(k).replace(/[^a-z]/g,'');
+  document.getElementById('jump').innerHTML = keys.map(k=>`<a href="#${slug(k)}">${S.group==='letter'?k:esc(k.replace('Faculty of ',''))}</a>`).join('');
+  document.getElementById('out').innerHTML = list.length ? keys.map(k=>`<section class="sec" id="${slug(k)}">
+    <h2><span class="badge ${S.group==='letter'?'':'wide'}">${S.group==='letter'?k:groups[k].length}</span>${S.group==='letter'?'':esc(k)}</h2>
+    <div class="people">${groups[k].map(e=>`<a class="person" href="${profileUrl(e,'option-e-az.html')}">${photo(e)}
+      <b>${hl(e.name,S.q)}</b><small>${e.rank}</small><small>${hl(e.dept,S.q)}</small><span class="v">View profile</span></a>`).join('')}</div>
+  </section>`).join('') : `<div class="empty" style="margin-top:20px">No experts found. <button class="linkbtn" onclick="S.reset()">Clear</button></div>`;
+}
+bindControls(S,render);
+document.getElementById('sort').innerHTML = '<option value="az">A → Z</option><option value="za">Z → A</option>';
+S.fill = (orig=>()=>{orig(); document.getElementById('sort').innerHTML = `<option value="az" ${S.sort==='az'?'selected':''}>A → Z</option><option value="za" ${S.sort==='za'?'selected':''}>Z → A</option>`})(S.fill);
+document.querySelectorAll('.groupby button').forEach(b=>b.onclick=()=>{
+  S.group=b.dataset.g; document.querySelectorAll('.groupby button').forEach(x=>x.classList.toggle('on',x===b)); render();
+});
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Expert Directory · Option D</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  body{background:#fff}
+  .hero{text-align:center;padding:56px 0 26px}
+  .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(32px,5vw,52px);margin:0 0 8px;color:var(--navy)}
+  .hero h1 span{color:var(--gold)}
+  .hero p{color:var(--muted);margin:0 0 24px}
+  .big{max-width:680px;margin:0 auto}
+  .big input{height:56px;border-radius:999px;font-size:16px;padding-left:48px;border:2px solid var(--navy)}
+  .big svg{left:18px}
+  .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:18px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-size:13.5px;cursor:pointer}
+  .chip:hover{border-color:var(--navy)}
+  .chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+  .more{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+  .more select{flex:0 1 210px}
+  .meta{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:16px 0;margin-top:26px;font-size:14px;color:var(--muted)}
+  .meta b{color:var(--ink)}
+  .list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media (max-width:760px){.list{grid-template-columns:1fr}}
+  .row{display:flex;gap:16px;align-items:center;text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;cursor:pointer;width:100%;transition:.15s}
+  .row:hover,.row.on{border-color:var(--gold);box-shadow:var(--shadow)}
+  .row .photo{width:84px;height:84px;border-radius:10px;flex:none}
+  .row h3{margin:0;font-size:16px}
+  .row p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+  .row .k{font-size:12.5px;color:var(--navy-2);margin-top:6px}
+  .row .chev{margin-left:auto;color:var(--gold);font-size:22px}
+
+  /* Quick-view drawer */
+  .scrim{position:fixed;inset:0;background:rgba(12,35,64,.35);opacity:0;pointer-events:none;transition:.25s;z-index:50}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:#fff;z-index:51;transform:translateX(100%);transition:.3s;overflow:auto;box-shadow:-20px 0 40px rgba(0,0,0,.15)}
+  body.open .scrim{opacity:1;pointer-events:auto} body.open .drawer{transform:none}
+  .drawer .photo{height:240px}
+  .drawer .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:0;background:#fff;cursor:pointer;font-size:18px;z-index:2}
+  .drawer .in{padding:22px 24px 30px}
+  .drawer .dept{color:var(--gold-ink);font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .drawer h2{font-family:var(--serif);font-weight:500;font-size:28px;margin:4px 0 2px}
+  .drawer h4{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:22px 0 8px}
+  .drawer .tags span{display:inline-block;font-size:12.5px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px 10px;margin:0 6px 6px 0}
+  .drawer ul{margin:0;padding-left:18px;font-size:14px}
+  .drawer .acts{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+  .ph{background:repeating-linear-gradient(-45deg,#fafbfc,#fafbfc 10px,#f2f4f7 10px,#f2f4f7 20px);border:1px dashed #cdd5df;border-radius:10px;padding:12px;color:var(--muted);font-size:13.5px}
+</style>
+</head>
+<body>
+<div class="mockbar">Option D · Search-first with quick-view panel · sample data — <a href="index.html">see all options</a></div>
+<header class="site"><div class="wrap"><a class="brand" href="index.html"><span class="mark">X</span><b>StFX Research Experts</b></a></div></header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Who are you <span>looking for?</span></h1>
+    <p>Type a name, research topic or course code.</p>
+    <label class="search big"><span class="sr">Search</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" class="field" type="search" placeholder="e.g. climate, Gaelic, PSYC 210"></label>
+    <div class="chips" id="facchips"></div>
+    <div class="more">
+      <label><span class="sr">Department</span><select id="dept" class="field"></select></label>
+      <label><span class="sr">Course</span><select id="course" class="field"></select></label>
+      <label><span class="sr">Research area</span><select id="area" class="field"></select></label>
+    </div>
+  </section>
+  <div class="meta"><span id="count"></span>
+    <label>Sort by <select id="sort" class="field" style="height:36px;margin-left:6px"></select></label></div>
+  <div class="list" id="list"></div>
+</main>
+<footer><div class="wrap">Option D mockup · placeholder content</div></footer>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Expert quick view"></aside>
+
+<script src="shared.js"></script>
+<script>
+const S = {q:'',faculty:'',dept:'',course:'',area:'',sort:'relevance',defaultSort:'relevance'};
+let openId = null;
+function render(){
+  document.getElementById('facchips').innerHTML = [['','All']].concat(FACULTIES.map(f=>[f,f]))
+    .map(([v,l])=>`<button class="chip ${S.faculty===v?'on':''}" data-f="${v}">${l}</button>`).join('');
+  const list = sortExperts(filterExperts(S),S.sort,S.q);
+  document.getElementById('count').innerHTML = `<b>${list.length}</b> ${list.length===1?'expert':'experts'}`;
+  document.getElementById('list').innerHTML = list.length ? list.map(e=>`
+    <button class="row ${openId===e.id?'on':''}" data-id="${e.id}">${photo(e)}
+      <div><h3>${hl(e.name,S.q)}</h3><p>${e.rank} · ${hl(e.dept,S.q)}</p><div class="k">${hl(e.keywords.join(' · '),S.q)}</div></div>
+      <span class="chev">›</span></button>`).join('')
+    : `<div class="empty" style="grid-column:1/-1">No matches. <button class="linkbtn" onclick="S.reset()">Clear search</button></div>`;
+}
+function openDrawer(id){
+  const e = EXPERTS.find(x=>x.id===id); openId=id;
+  document.getElementById('drawer').innerHTML = `
+    <button class="x" onclick="closeDrawer()" aria-label="Close">✕</button>${photo(e)}
+    <div class="in"><div class="dept">${e.dept} · Faculty of ${e.faculty}</div><h2>${e.name}</h2><div style="color:var(--muted)">${e.rank}</div>
+      <h4>About</h4><div class="ph">Short biography placeholder (2–3 sentences).</div>
+      <h4>Research areas</h4><div class="tags">${e.areas.map(a=>`<span>${areaName(a)}</span>`).concat(e.keywords.map(k=>`<span>${k}</span>`)).join('')}</div>
+      <h4>Courses taught</h4><ul>${e.courses.map(c=>`<li><b>${c.code}</b> — ${c.title}</li>`).join('')}</ul>
+      <h4>Contact</h4><div style="font-size:14px">${e.email}</div>
+      <div class="acts"><a class="btn gold" href="${profileUrl(e,'option-d-quickview.html')}">Open full profile →</a><a class="btn line" href="mailto:${e.email}">Email</a></div>
+    </div>`;
+  document.body.classList.add('open'); render();
+}
+function closeDrawer(){ document.body.classList.remove('open'); openId=null; render(); }
+bindControls(S,render);
+document.addEventListener('click',ev=>{
+  const f = ev.target.closest('[data-f]'); if(f){S.faculty=f.dataset.f;S.dept='';S.course='';S.fill();render()}
+  const r = ev.target.closest('.row'); if(r) openDrawer(r.dataset.id);
+});
+document.getElementById('scrim').onclick = closeDrawer;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+render();
+</script>
+</body>
+</html>
