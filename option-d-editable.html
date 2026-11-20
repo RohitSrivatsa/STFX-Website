@@ -530,7 +530,7 @@ function openDrawer(id){
       <h4>About</h4>${e.bio?`<div class="bio">${esc(e.bio.length>320?e.bio.slice(0,320)+'…':e.bio)}</div>`:`<div class="phtext">Short biography placeholder (2–3 sentences).</div>`}
       <h4>Research areas</h4><div class="tagset">${e.areas.map(a=>`<span>${areaName(a)}</span>`).concat(e.keywords.map(k=>`<span>${esc(k)}</span>`)).join('')}</div>
       ${e.courses.length?`<h4>Courses taught</h4><ul>${e.courses.map(c=>`<li><b>${esc(c.code)}</b> — ${esc(c.title)}</li>`).join('')}</ul>`:''}
-      <h4>Contact</h4><div style="font-size:14px;line-height:1.8"><b>Email:</b> <a href="mailto:${esc(e.email)}">${esc(e.email)}</a>${e.phone?`<br><b>Phone:</b> ${esc(e.phone)}`:''}<br><b>CV:</b> <a href="#" onclick="return false">Download CV (PDF)</a></div>
+      <h4>Contact</h4><div style="font-size:14px;line-height:1.8"><b>Email:</b> <a href="mailto:${esc(e.email)}">${esc(e.email)}</a>${e.phone?`<br><b>Phone:</b> ${esc(e.phone)}`:''}</div>
       <div class="acts"><a class="btn gold" href="#/expert/${e.id}">Open full profile →</a>      ${USER?`<a class="btn navy" href="#/admin/edit/${e.id}">✎ Edit</a>`:''}</div></div>`;
   document.body.classList.add('open'); renderList();
 }
@@ -551,7 +551,7 @@ function renderProfile(id){
     ${e.project?`<section><h2>Project(s)</h2><p>${esc(e.project)}</p></section>`:''}
     ${e.courses.length?`<section><h2>Courses Taught</h2><table class="p-courses">${e.courses.map(c=>`<tr><td>${esc(c.code)}</td><td>${esc(c.title)}</td></tr>`).join('')}</table></section>`:''}
   </div>
-  <aside class="p-card"><h3>Contact</h3><dl><dt>Email</dt><dd><a href="mailto:${esc(e.email)}">${esc(e.email)}</a></dd>${e.phone?`<dt>Phone</dt><dd>${esc(e.phone)}</dd>`:''}${e.office?`<dt>Office</dt><dd>${esc(e.office)}</dd>`:''}<dt>CV</dt><dd><a href="#" onclick="return false">Download CV (PDF)</a></dd></dl>
+  <aside class="p-card"><h3>Contact</h3><dl><dt>Email</dt><dd><a href="mailto:${esc(e.email)}">${esc(e.email)}</a></dd>${e.phone?`<dt>Phone</dt><dd>${esc(e.phone)}</dd>`:''}${e.office?`<dt>Office</dt><dd>${esc(e.office)}</dd>`:''}</dl>
     <h3 style="margin-top:20px">Research Axis</h3><div class="p-tags" style="margin:0">${e.areas.map(a=>`<span>${areaName(a)}</span>`).join('')}</div></aside></div>`;
 }
 
