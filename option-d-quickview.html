@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Expert Directory · Option D</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600;700&family=Barlow+Semi+Condensed:wght@500;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
 <style>
   body{background:#fff}
@@ -22,20 +22,26 @@
   .more select{flex:0 1 210px}
   .meta{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:16px 0;margin-top:26px;font-size:14px;color:var(--muted)}
   .meta b{color:var(--ink)}
-  .list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-  @media (max-width:760px){.list{grid-template-columns:1fr}}
-  .row{display:flex;gap:16px;align-items:center;text-align:left;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:12px;cursor:pointer;width:100%;transition:.15s}
-  .row:hover,.row.on{border-color:var(--gold);box-shadow:var(--shadow)}
-  .row .photo{width:84px;height:84px;border-radius:10px;flex:none}
-  .row h3{margin:0;font-size:16px}
-  .row p{margin:2px 0 0;font-size:13px;color:var(--muted)}
-  .row .k{font-size:12.5px;color:var(--navy-2);margin-top:6px}
-  .row .chev{margin-left:auto;color:var(--gold);font-size:22px}
+  /* Expert rows: same look as Option F (one per row, large photo) */
+  .list{border-top:1px solid var(--line)}
+  .xrow{display:grid;grid-template-columns:300px 1fr;gap:72px;align-items:start;padding:48px 0 48px 40px;border-bottom:1px solid var(--line);cursor:pointer;font-family:"Source Sans 3","Source Sans Pro",Arial,sans-serif;font-size:18px;line-height:1.75;color:#111;transition:background .15s}
+  .xrow:hover,.xrow.on{background:#fbfaf6}
+  .xrow:focus-visible{outline:3px solid var(--gold);outline-offset:-3px}
+  .xph{width:300px;max-width:100%;aspect-ratio:300/292;display:grid;place-items:end center;overflow:hidden;position:relative;background:linear-gradient(180deg,#e9eaec,#d7d9dd)}
+  .xph svg{width:66%;display:block}
+  .xph span{position:absolute;left:8px;top:8px;font:600 11px "Source Sans 3",sans-serif;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.85);padding:2px 8px;color:#555}
+  .xrow h3{font:600 34px/1.2 "Barlow Semi Condensed","Arial Narrow",sans-serif;margin:8px 0 6px;color:#111}
+  .xrow .sub{font-size:16px;color:var(--muted);margin:0 0 20px}
+  .xrow p{margin:0 0 20px}
+  .xrow .qv{display:inline-flex;align-items:center;gap:10px;font:600 16px "Barlow Semi Condensed",sans-serif;text-transform:uppercase;color:var(--navy);background:none;border:0;padding:0;cursor:pointer;letter-spacing:.01em}
+  .xrow:hover .qv{text-decoration:underline}
+  @media (max-width:1000px){.xrow{gap:40px;padding-left:0}}
+  @media (max-width:760px){.xrow{grid-template-columns:1fr;gap:22px;padding:36px 0}.xph{margin:0 auto}.xrow h3{font-size:28px}}
 
   /* Quick-view drawer */
   .scrim{position:fixed;inset:0;background:rgba(12,35,64,.35);opacity:0;pointer-events:none;transition:.25s;z-index:50}
-  .drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:#fff;z-index:51;transform:translateX(100%);transition:.3s;overflow:auto;box-shadow:-20px 0 40px rgba(0,0,0,.15)}
-  body.open .scrim{opacity:1;pointer-events:auto} body.open .drawer{transform:none}
+  .drawer{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:#fff;z-index:51;transform:translateX(100%);transition:.3s;overflow:auto;visibility:hidden}
+  body.open .scrim{opacity:1;pointer-events:auto} body.open .drawer{transform:none;visibility:visible;box-shadow:-20px 0 40px rgba(0,0,0,.15)}
   .drawer .photo{height:240px}
   .drawer .x{position:absolute;top:12px;right:12px;width:36px;height:36px;border-radius:50%;border:0;background:#fff;cursor:pointer;font-size:18px;z-index:2}
   .drawer .in{padding:22px 24px 30px}
@@ -79,21 +85,32 @@
 <script>
 const S = {q:'',faculty:'',dept:'',course:'',area:'',sort:'relevance',defaultSort:'relevance'};
 let openId = null;
+const GREY_SIL = `<svg viewBox="0 0 100 90" aria-hidden="true"><circle cx="50" cy="33" r="19" fill="#b9bec6"/><path d="M10 90c2-23 19-35 40-35s38 12 40 35z" fill="#9aa1ab"/></svg>`;
+const projectText = e => { const k=e.keywords; return `Research focuses on ${k[0]} and ${k[1]}${k[2]?`, with projects exploring ${k.slice(2).join(' and ')}`:''}. Placeholder summary to be replaced with the expert’s own description.`; };
+EXPERTS.forEach(e=>e.hay += ' '+norm(projectText(e)));
 function render(){
   document.getElementById('facchips').innerHTML = [['','All']].concat(FACULTIES.map(f=>[f,f]))
     .map(([v,l])=>`<button class="chip ${S.faculty===v?'on':''}" data-f="${v}">${l}</button>`).join('');
   const list = sortExperts(filterExperts(S),S.sort,S.q);
   document.getElementById('count').innerHTML = `<b>${list.length}</b> ${list.length===1?'expert':'experts'}`;
+  const cap = k => k[0].toUpperCase()+k.slice(1);
   document.getElementById('list').innerHTML = list.length ? list.map(e=>`
-    <button class="row ${openId===e.id?'on':''}" data-id="${e.id}">${photo(e)}
-      <div><h3>${hl(e.name,S.q)}</h3><p>${e.rank} · ${hl(e.dept,S.q)}</p><div class="k">${hl(e.keywords.join(' · '),S.q)}</div></div>
-      <span class="chev">›</span></button>`).join('')
-    : `<div class="empty" style="grid-column:1/-1">No matches. <button class="linkbtn" onclick="S.reset()">Clear search</button></div>`;
+    <article class="xrow ${openId===e.id?'on':''}" data-id="${e.id}" tabindex="0" role="button" aria-label="Quick view: ${esc(e.first+' '+e.last)}">
+      <div class="xph" role="img" aria-label="Headshot placeholder"><span>Photo</span>${GREY_SIL}</div>
+      <div>
+        <h3>${hl(e.first+' '+e.last,S.q)}</h3>
+        <div class="sub">${e.rank} · ${hl(e.dept,S.q)}</div>
+        <p><b>Keywords:</b> ${hl(e.keywords.map((k,i)=>i?k:cap(k)).join(', '),S.q)}</p>
+        <p><b>Project(s):</b><br>${hl(projectText(e),S.q)}</p>
+        <span class="qv">Quick view <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </article>`).join('')
+    : `<div class="empty">No matches. <button class="linkbtn" onclick="S.reset()">Clear search</button></div>`;
 }
 function openDrawer(id){
   const e = EXPERTS.find(x=>x.id===id); openId=id;
   document.getElementById('drawer').innerHTML = `
-    <button class="x" onclick="closeDrawer()" aria-label="Close">✕</button>${photo(e)}
+    <button class="x" onclick="closeDrawer()" aria-label="Close">✕</button><div class="photo xph" style="width:100%;aspect-ratio:auto;height:240px" role="img" aria-label="Headshot placeholder"><span>Photo</span>${GREY_SIL}</div>
     <div class="in"><div class="dept">${e.dept} · Faculty of ${e.faculty}</div><h2>${e.name}</h2><div style="color:var(--muted)">${e.rank}</div>
       <h4>About</h4><div class="ph">Short biography placeholder (2–3 sentences).</div>
       <h4>Research areas</h4><div class="tags">${e.areas.map(a=>`<span>${areaName(a)}</span>`).concat(e.keywords.map(k=>`<span>${k}</span>`)).join('')}</div>
@@ -107,10 +124,10 @@ function closeDrawer(){ document.body.classList.remove('open'); openId=null; ren
 bindControls(S,render);
 document.addEventListener('click',ev=>{
   const f = ev.target.closest('[data-f]'); if(f){S.faculty=f.dataset.f;S.dept='';S.course='';S.fill();render()}
-  const r = ev.target.closest('.row'); if(r) openDrawer(r.dataset.id);
+  const r = ev.target.closest('.xrow'); if(r) openDrawer(r.dataset.id);
 });
 document.getElementById('scrim').onclick = closeDrawer;
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer(); const r=e.target.closest&&e.target.closest('.xrow'); if(r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openDrawer(r.dataset.id)}});
 render();
 </script>
 </body>
