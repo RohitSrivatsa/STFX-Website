@@ -15,7 +15,11 @@ mark{background:var(--gold-soft);color:var(--gold-ink);border-radius:3px;padding
 
 .mockbar{background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;text-align:center;padding:6px 16px}
 .mockbar a{font-weight:700}
-.site{background:var(--navy);color:#fff}
+.site{background:#fff;color:var(--navy);border-bottom:4px solid var(--gold)}
+.site .wrap{height:auto!important;padding-top:10px;padding-bottom:10px}
+.logo-img{display:block;height:56px;width:auto}
+.site-title{margin-left:auto;font-weight:700;font-size:15px;color:var(--navy);letter-spacing:.02em}
+@media (max-width:480px){.logo-img{height:44px}.site-title{display:none}}
 .site .wrap{display:flex;align-items:center;gap:12px;height:60px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .brand .mark{width:34px;height:34px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-family:var(--serif);font-weight:700;color:var(--gold)}
